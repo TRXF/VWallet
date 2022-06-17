@@ -1,12 +1,11 @@
 import '../auth/auth_util.dart';
-import '../backend/backend.dart';
+import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../forgot_password/forgot_password_widget.dart';
-import '../main.dart';
 import '../register_account/register_account_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../wallet_details/wallet_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +18,8 @@ class LoginPageWidget extends StatefulWidget {
 }
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
+  ApiCallResponse vagaWallet;
+  ApiCallResponse wallet;
   TextEditingController emailAddressLoginController;
   TextEditingController passwordLoginController;
   bool passwordLoginVisibility;
@@ -36,7 +37,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).background,
+      backgroundColor: Color(0xFF1C1C1C),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -254,6 +255,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   ),
                                   FFButtonWidget(
                                     onPressed: () async {
+                                      var _shouldSetState = false;
+
                                       final user = await signInWithEmail(
                                         context,
                                         emailAddressLoginController.text,
@@ -265,14 +268,79 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
                                       setState(() => FFAppState().password =
                                           passwordLoginController.text);
-                                      await Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => NavBarPage(
-                                              initialPage: 'MY_Card'),
-                                        ),
-                                        (r) => false,
+                                      vagaWallet = await UserCall.call(
+                                        uid: currentUserUid,
                                       );
+                                      _shouldSetState = true;
+                                      if (getJsonField(
+                                        (vagaWallet?.jsonBody ?? ''),
+                                        r'''$.vaga_wallet''',
+                                      )) {
+                                        setState(() => FFAppState().mnemonic =
+                                                getJsonField(
+                                              (vagaWallet?.jsonBody ?? ''),
+                                              r'''$.vaga_wallet''',
+                                            ).toString());
+                                      } else {
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          'No Wallet Found'),
+                                                      content: Text(
+                                                          'Do you want to create a new VagaWallet?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                          child: Text('No'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                          child: Text('Yes'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
+                                        if (confirmDialogResponse) {
+                                          wallet = await CreateWalletCall.call(
+                                            uid: currentUserUid,
+                                          );
+                                          _shouldSetState = true;
+                                          setState(() => FFAppState().mnemonic =
+                                                  getJsonField(
+                                                (wallet?.jsonBody ?? ''),
+                                                r'''$.data.wallet.mnemonic''',
+                                              ).toString());
+                                          setState(() => FFAppState()
+                                                  .privatekey = getJsonField(
+                                                (wallet?.jsonBody ?? ''),
+                                                r'''$.data.wallet.privateKey''',
+                                              ).toString());
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  WalletDetailsWidget(),
+                                            ),
+                                          );
+                                        } else {
+                                          if (_shouldSetState) setState(() {});
+                                          return;
+                                        }
+                                      }
+
+                                      if (_shouldSetState) setState(() {});
                                     },
                                     text: 'Login',
                                     options: FFButtonOptions(
@@ -319,40 +387,48 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1,
                                         ),
-                                        FFButtonWidget(
-                                          onPressed: () async {
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RegisterAccountWidget(),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.1, 0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RegisterAccountWidget(),
+                                                ),
+                                              );
+                                            },
+                                            text: 'Create',
+                                            options: FFButtonOptions(
+                                              width: 70,
+                                              height: 40,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .background,
+                                              textStyle: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyText2
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFFDA0004),
+                                                  ),
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1,
                                               ),
-                                            );
-                                          },
-                                          text: 'Create',
-                                          options: FFButtonOptions(
-                                            width: 70,
-                                            height: 40,
-                                            color: FlutterFlowTheme.of(context)
-                                                .background,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyText2
-                                                    .override(
-                                                      fontFamily: 'Lexend Deca',
-                                                      color: Color(0xFFDA0004),
-                                                    ),
-                                            borderSide: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 1,
+                                              borderRadius: 12,
                                             ),
-                                            borderRadius: 12,
                                           ),
                                         ),
-                                        Icon(
-                                          Icons.arrow_forward_rounded,
-                                          color: Color(0xFFDA0004),
-                                          size: 24,
+                                        Align(
+                                          alignment: AlignmentDirectional(0, 0),
+                                          child: Icon(
+                                            Icons.arrow_forward_rounded,
+                                            color: Color(0xFFDA0004),
+                                            size: 24,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -360,51 +436,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 ],
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            final user = await signInAnonymously(context);
-                            if (user == null) {
-                              return;
-                            }
-
-                            final budgetListCreateData =
-                                createBudgetListRecordData(
-                              budgetUser: currentUserReference,
-                            );
-                            await BudgetListRecord.collection
-                                .doc()
-                                .set(budgetListCreateData);
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NavBarPage(initialPage: 'MY_Card'),
-                              ),
-                              (r) => false,
-                            );
-                          },
-                          text: 'Continue as Guest',
-                          options: FFButtonOptions(
-                            width: 230,
-                            height: 50,
-                            color: FlutterFlowTheme.of(context).background,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .subtitle2
-                                .override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: FlutterFlowTheme.of(context).textColor,
-                                ),
-                            elevation: 3,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1,
-                            ),
-                            borderRadius: 30,
                           ),
                         ),
                       ),

@@ -36,3 +36,4 @@ export 'budget_d_e_l_e_t_e/budget_d_e_l_e_t_e_widget.dart'
     show BudgetDELETEWidget;
 export 'wallet/wallet_widget.dart' show WalletWidget;
 export 'verify_tx/verify_tx_widget.dart' show VerifyTxWidget;
+export 'wallet_details/wallet_details_widget.dart' show WalletDetailsWidget;

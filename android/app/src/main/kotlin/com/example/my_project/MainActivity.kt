@@ -1,4 +1,4 @@
-package com.flutterflow.finwallet
+package app.vagabond.io
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -5,7 +5,6 @@ import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../transfer_funds/transfer_funds_widget.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -112,7 +111,10 @@ class _MYCardWidgetState extends State<MYCardWidget>
   Widget build(BuildContext context) {
     return FutureBuilder<ApiCallResponse>(
       future: UserCall.call(
-        uid: currentUserUid,
+        uid: valueOrDefault<String>(
+          currentUserUid,
+          '0',
+        ),
       ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
@@ -135,7 +137,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
             backgroundColor: FlutterFlowTheme.of(context).background,
             automaticallyImplyLeading: false,
             title: Text(
-              FFAppState().password,
+              'VagaWallet',
               style: FlutterFlowTheme.of(context).title1,
             ),
             actions: [],
@@ -241,9 +243,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                   children: [
                                     FutureBuilder<ApiCallResponse>(
                                       future: BalanceCall.call(
-                                        address: UserCall.vagawallet(
-                                          (mYCardUserResponse?.jsonBody ?? ''),
-                                        ).toString(),
+                                        uid: currentUserUid,
                                       ),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
@@ -263,17 +263,11 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                             snapshot.data;
                                         return Text(
                                           valueOrDefault<String>(
-                                            formatNumber(
-                                              functions.formatedBalance(
-                                                  BalanceCall.balance(
-                                                (textBalanceResponse
-                                                        ?.jsonBody ??
-                                                    ''),
-                                              )),
-                                              formatType: FormatType.decimal,
-                                              decimalType:
-                                                  DecimalType.automatic,
-                                            ),
+                                            getJsonField(
+                                              (textBalanceResponse?.jsonBody ??
+                                                  ''),
+                                              r'''$.data''',
+                                            ).toString(),
                                             '0',
                                           ),
                                           style: FlutterFlowTheme.of(context)
@@ -298,7 +292,10 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                   children: [
                                     FutureBuilder<ApiCallResponse>(
                                       future: UserCall.call(
-                                        uid: currentUserUid,
+                                        uid: valueOrDefault<String>(
+                                          currentUserUid,
+                                          'XXX',
+                                        ),
                                       ),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
@@ -319,7 +316,9 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                           UserCall.vagawallet(
                                             (textUserResponse?.jsonBody ?? ''),
                                           ).toString().maybeHandleOverflow(
-                                              maxChars: 32),
+                                                maxChars: 32,
+                                                replacement: '…',
+                                              ),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1
                                               .override(
@@ -380,48 +379,43 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 8, 0, 12),
-                                  child: Text(
-                                    '+1,402',
-                                    textAlign: TextAlign.start,
-                                    style: FlutterFlowTheme.of(context)
-                                        .title1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiaryColor,
-                                        ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 80,
-                                  height: 28,
-                                  decoration: BoxDecoration(
-                                    color: Color(0x4D39D2C0),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '4.5% ',
+                                  child: FutureBuilder<ApiCallResponse>(
+                                    future: IncomeCall.call(
+                                      address: UserCall.vagawallet(
+                                        (mYCardUserResponse?.jsonBody ?? ''),
+                                      ).toString(),
+                                    ),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: SpinKitRipple(
+                                              color: Color(0xFFDA0004),
+                                              size: 40,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      final textIncomeResponse = snapshot.data;
+                                      return Text(
+                                        getJsonField(
+                                          (textIncomeResponse?.jsonBody ?? ''),
+                                          r'''$.data''',
+                                        ).toString(),
                                         textAlign: TextAlign.start,
                                         style: FlutterFlowTheme.of(context)
-                                            .bodyText1
+                                            .title1
                                             .override(
                                               fontFamily: 'Lexend Deca',
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .tertiaryColor,
                                             ),
-                                      ),
-                                      Icon(
-                                        Icons.trending_up_rounded,
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiaryColor,
-                                        size: 24,
-                                      ),
-                                    ],
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -452,48 +446,45 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 8, 0, 12),
-                                  child: Text(
-                                    '-392',
-                                    textAlign: TextAlign.start,
-                                    style: FlutterFlowTheme.of(context)
-                                        .title1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: FlutterFlowTheme.of(context)
-                                              .errorRed,
-                                        ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 80,
-                                  height: 28,
-                                  decoration: BoxDecoration(
-                                    color: Color(0x9AF06A6A),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '4.5% ',
+                                  child: FutureBuilder<ApiCallResponse>(
+                                    future: SpendingCall.call(
+                                      address: UserCall.vagawallet(
+                                        (mYCardUserResponse?.jsonBody ?? ''),
+                                      ).toString(),
+                                    ),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: SpinKitRipple(
+                                              color: Color(0xFFDA0004),
+                                              size: 40,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      final textSpendingResponse =
+                                          snapshot.data;
+                                      return Text(
+                                        getJsonField(
+                                          (textSpendingResponse?.jsonBody ??
+                                              ''),
+                                          r'''$.data''',
+                                        ).toString(),
                                         textAlign: TextAlign.start,
                                         style: FlutterFlowTheme.of(context)
-                                            .bodyText1
+                                            .title1
                                             .override(
                                               fontFamily: 'Lexend Deca',
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .errorRed,
                                             ),
-                                      ),
-                                      Icon(
-                                        Icons.trending_up_rounded,
-                                        color: FlutterFlowTheme.of(context)
-                                            .errorRed,
-                                        size: 24,
-                                      ),
-                                    ],
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -672,19 +663,17 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                   snapshot.data;
                               return Builder(
                                 builder: (context) {
-                                  final txResponse =
-                                      TransactionsCall.signatures(
-                                            (transactionListTransactionsResponse
-                                                    ?.jsonBody ??
-                                                ''),
-                                          )?.toList() ??
-                                          [];
+                                  final txs = TransactionsCall.get(
+                                        (transactionListTransactionsResponse
+                                                ?.jsonBody ??
+                                            ''),
+                                      )?.toList() ??
+                                      [];
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
-                                    children: List.generate(txResponse.length,
-                                        (txResponseIndex) {
-                                      final txResponseItem =
-                                          txResponse[txResponseIndex];
+                                    children:
+                                        List.generate(txs.length, (txsIndex) {
+                                      final txsItem = txs[txsIndex];
                                       return Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 8),
@@ -745,12 +734,14 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                                     children: [
                                                       Text(
                                                         getJsonField(
-                                                          txResponseItem,
-                                                          r'''$.txhash''',
+                                                          txsItem,
+                                                          r'''$.from''',
                                                         )
                                                             .toString()
                                                             .maybeHandleOverflow(
-                                                                maxChars: 32),
+                                                              maxChars: 28,
+                                                              replacement: '…',
+                                                            ),
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -771,19 +762,22 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                                                     0, 4, 0, 0),
                                                         child: Text(
                                                           getJsonField(
-                                                            txResponseItem,
-                                                            r'''$.data''',
+                                                            txsItem,
+                                                            r'''$.to''',
                                                           )
                                                               .toString()
                                                               .maybeHandleOverflow(
-                                                                  maxChars: 32),
+                                                                maxChars: 28,
+                                                                replacement:
+                                                                    '…',
+                                                              ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyText1
                                                               .override(
                                                                 fontFamily:
                                                                     'Lexend Deca',
-                                                                fontSize: 11,
+                                                                fontSize: 10,
                                                               ),
                                                         ),
                                                       ),
@@ -803,10 +797,13 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                                       CrossAxisAlignment.end,
                                                   children: [
                                                     Text(
-                                                      getJsonField(
-                                                        txResponseItem,
-                                                        r'''$.gas_used''',
-                                                      ).toString(),
+                                                      valueOrDefault<String>(
+                                                        getJsonField(
+                                                          txsItem,
+                                                          r'''$.amount''',
+                                                        ).toString(),
+                                                        '0',
+                                                      ),
                                                       textAlign: TextAlign.end,
                                                       style:
                                                           FlutterFlowTheme.of(
@@ -825,23 +822,13 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
-                                                                  0, 4, 0, 0),
-                                                      child: Text(
-                                                        getJsonField(
-                                                          txResponseItem,
-                                                          r'''$.height''',
-                                                        ).toString(),
-                                                        textAlign:
-                                                            TextAlign.end,
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  fontSize: 11,
-                                                                ),
+                                                                  0, 10, 0, 0),
+                                                      child: FaIcon(
+                                                        FontAwesomeIcons
+                                                            .longArrowAltRight,
+                                                        color:
+                                                            Color(0xFFE3E3E3),
+                                                        size: 16,
                                                       ),
                                                     ),
                                                   ],

@@ -31,11 +31,14 @@ class _TransferCompleteWidgetState extends State<TransferCompleteWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/transferComplete@2x.png',
-                  width: 250,
-                  height: 250,
-                  fit: BoxFit.fitHeight,
+                Align(
+                  alignment: AlignmentDirectional(0, 0),
+                  child: Image.asset(
+                    'assets/images/Check3.png',
+                    width: MediaQuery.of(context).size.width,
+                    height: 500,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ],
             ),

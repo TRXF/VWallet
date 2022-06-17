@@ -4,7 +4,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WalletWidget extends StatefulWidget {
@@ -15,6 +14,7 @@ class WalletWidget extends StatefulWidget {
 }
 
 class _WalletWidgetState extends State<WalletWidget> {
+  ApiCallResponse wallet;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -24,19 +24,43 @@ class _WalletWidgetState extends State<WalletWidget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: false,
+        leading: InkWell(
+          onTap: () async {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.chevron_left_rounded,
+            color: FlutterFlowTheme.of(context).textColor,
+            size: 32,
+          ),
+        ),
         title: Text(
-          'Wallet Settings',
-          style: FlutterFlowTheme.of(context).title2.override(
-                fontFamily: 'Lexend Deca',
-                color: Colors.white,
-                fontSize: 22,
-              ),
+          'Wallets',
+          style: FlutterFlowTheme.of(context).title3,
         ),
         actions: [],
         centerTitle: false,
-        elevation: 2,
+        elevation: 0,
       ),
       backgroundColor: FlutterFlowTheme.of(context).background,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          wallet = await CreateWalletCall.call();
+          setState(() => FFAppState().mnemonic = getJsonField(
+                (wallet?.jsonBody ?? ''),
+                r'''$.data.wallet.mnemonic''',
+              ).toString());
+
+          setState(() {});
+        },
+        backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
+        elevation: 8,
+        child: Icon(
+          Icons.add,
+          color: FlutterFlowTheme.of(context).textColor,
+          size: 32,
+        ),
+      ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -49,7 +73,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 18, 0, 10),
                     child: Text(
-                      'Main Wallet',
+                      'Vaga Wallet',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Lexend Deca',
                             fontSize: 21,
@@ -61,67 +85,54 @@ class _WalletWidgetState extends State<WalletWidget> {
               Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(
-                    child: Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 10),
-                        child: FutureBuilder<ApiCallResponse>(
-                          future: UserCall.call(
-                            uid: currentUserUid,
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: SpinKitRipple(
-                                    color: Color(0xFFDA0004),
-                                    size: 40,
-                                  ),
-                                ),
-                              );
-                            }
-                            final cardUserResponse = snapshot.data;
-                            return Card(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              color: FlutterFlowTheme.of(context).background,
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 10),
-                                child: Text(
-                                  UserCall.vagawallet(
-                                    (cardUserResponse?.jsonBody ?? ''),
-                                  ).toString(),
-                                  textAlign: TextAlign.start,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Lexend Deca',
-                                        fontSize: 12,
-                                      ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
                   Align(
                     alignment: AlignmentDirectional(0, 0),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
-                      child: FaIcon(
-                        FontAwesomeIcons.windowClose,
-                        color: Color(0xFFDA0004),
-                        size: 24,
+                      padding: EdgeInsetsDirectional.fromSTEB(10, 10, 0, 10),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: UserCall.call(
+                          uid: currentUserUid,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: SpinKitRipple(
+                                  color: Color(0xFFDA0004),
+                                  size: 40,
+                                ),
+                              ),
+                            );
+                          }
+                          final cardUserResponse = snapshot.data;
+                          return Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            color: FlutterFlowTheme.of(context).background,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  10, 10, 10, 10),
+                              child: Text(
+                                UserCall.vagawallet(
+                                  (cardUserResponse?.jsonBody ?? ''),
+                                ).toString(),
+                                textAlign: TextAlign.start,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 12,
+                                    ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -148,65 +159,141 @@ class _WalletWidgetState extends State<WalletWidget> {
               Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(
-                    child: Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 10),
-                        child: FutureBuilder<ApiCallResponse>(
-                          future: UserCall.call(
-                            uid: currentUserUid,
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
+                    child: Text(
+                      'Binance Smart Chain',
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Lexend Deca',
+                            fontSize: 12,
                           ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: SpinKitRipple(
-                                    color: Color(0xFFDA0004),
-                                    size: 40,
-                                  ),
-                                ),
-                              );
-                            }
-                            final cardUserResponse = snapshot.data;
-                            return Card(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              color: FlutterFlowTheme.of(context).background,
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    10, 10, 10, 10),
-                                child: Text(
-                                  UserCall.vagawallet(
-                                    (cardUserResponse?.jsonBody ?? ''),
-                                  ).toString(),
-                                  textAlign: TextAlign.start,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Lexend Deca',
-                                        fontSize: 12,
-                                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(0, 0),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(10, 10, 0, 10),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: UserCall.call(
+                          uid: currentUserUid,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: SpinKitRipple(
+                                  color: Color(0xFFDA0004),
+                                  size: 40,
                                 ),
                               ),
                             );
-                          },
-                        ),
+                          }
+                          final cardUserResponse = snapshot.data;
+                          return Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            color: FlutterFlowTheme.of(context).background,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  10, 10, 10, 10),
+                              child: Text(
+                                UserCall.bscwallet(
+                                  (cardUserResponse?.jsonBody ?? ''),
+                                ).toString(),
+                                textAlign: TextAlign.start,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 12,
+                                    ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
-                    child: FaIcon(
-                      FontAwesomeIcons.windowClose,
-                      color: Color(0xFFDA0004),
-                      size: 24,
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 10, 10, 10),
+                    child: Text(
+                      'XRPL',
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Lexend Deca',
+                            fontSize: 12,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(0, 0),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(10, 10, 0, 10),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: UserCall.call(
+                          uid: currentUserUid,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: SpinKitRipple(
+                                  color: Color(0xFFDA0004),
+                                  size: 40,
+                                ),
+                              ),
+                            );
+                          }
+                          final cardUserResponse = snapshot.data;
+                          return Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            color: FlutterFlowTheme.of(context).background,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  10, 10, 10, 10),
+                              child: Text(
+                                UserCall.xrplwallet(
+                                  (cardUserResponse?.jsonBody ?? ''),
+                                ).toString(),
+                                textAlign: TextAlign.start,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 12,
+                                    ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

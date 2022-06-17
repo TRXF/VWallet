@@ -15,6 +15,8 @@ class FFAppState {
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
     _password = prefs.getString('ff_password') ?? _password;
+    _mnemonic = prefs.getString('ff_mnemonic') ?? _mnemonic;
+    _privatekey = prefs.getString('ff_privatekey') ?? _privatekey;
   }
 
   SharedPreferences prefs;
@@ -24,6 +26,22 @@ class FFAppState {
   set password(String _value) {
     _password = _value;
     prefs.setString('ff_password', _value);
+  }
+
+  String uid = '';
+
+  String _mnemonic = '';
+  String get mnemonic => _mnemonic;
+  set mnemonic(String _value) {
+    _mnemonic = _value;
+    prefs.setString('ff_mnemonic', _value);
+  }
+
+  String _privatekey = '';
+  String get privatekey => _privatekey;
+  set privatekey(String _value) {
+    _privatekey = _value;
+    prefs.setString('ff_privatekey', _value);
   }
 }
 
