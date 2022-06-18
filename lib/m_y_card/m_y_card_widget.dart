@@ -685,7 +685,9 @@ class _MYCardWidgetState extends State<MYCardWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
                           child: FutureBuilder<ApiCallResponse>(
                             future: TransactionsCall.call(
-                              address: FFAppState().mainAddress,
+                              address: UserCall.vagawallet(
+                                (mYCardUserResponse?.jsonBody ?? ''),
+                              ).toString(),
                             ),
                             builder: (context, snapshot) {
                               // Customize what your widget looks like when it's loading.

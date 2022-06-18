@@ -41,6 +41,50 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74620928473:android:890d9d0549c71a52af19c8",
+        "android_client_info": {
+          "package_name": "app.vagawallet.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74620928473-7ov38noiejleqckkffq9h8pprb7g7b8e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.vagawallet.io",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "74620928473-jgf126pha5jqrrom50nqosk9jo4va7it.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA__b57kLgQp1imWL3idY7PJr9lHckQX5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74620928473-jgf126pha5jqrrom50nqosk9jo4va7it.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "74620928473-3mqblkje6911hplosto97r433d7fijij.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.vagabond.io"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

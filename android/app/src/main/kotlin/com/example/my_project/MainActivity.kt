@@ -1,4 +1,4 @@
-package app.vagabond.io
+package app.vagawallet.io
 
 import io.flutter.embedding.android.FlutterActivity
 

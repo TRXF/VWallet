@@ -20,6 +20,7 @@ class TransferFundsVerifyWidget extends StatefulWidget {
 class _TransferFundsVerifyWidgetState extends State<TransferFundsVerifyWidget>
     with TickerProviderStateMixin {
   ApiCallResponse transferTx;
+  ApiCallResponse unlockData;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'rowOnPageLoadAnimation1': AnimationInfo(
@@ -361,44 +362,69 @@ class _TransferFundsVerifyWidgetState extends State<TransferFundsVerifyWidget>
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              FutureBuilder<ApiCallResponse>(
-                                future: GasCall.call(
-                                  address: FFAppState().sendto,
-                                  amount: FFAppState().sendamount,
-                                  mnemonic: FFAppState().mnemonic,
-                                ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: SpinKitRipple(
-                                          color: Color(0xFFDA0004),
-                                          size: 40,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  final textGasResponse = snapshot.data;
-                                  return Text(
-                                    valueOrDefault<String>(
-                                      getJsonField(
-                                        (textGasResponse?.jsonBody ?? ''),
+                          child: FutureBuilder<ApiCallResponse>(
+                            future: UnlockCall.call(
+                              uid: currentUserUid,
+                              password: FFAppState().password,
+                            ),
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: SpinKitRipple(
+                                      color: Color(0xFFDA0004),
+                                      size: 40,
+                                    ),
+                                  ),
+                                );
+                              }
+                              final rowUnlockResponse = snapshot.data;
+                              return Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  FutureBuilder<ApiCallResponse>(
+                                    future: GasCall.call(
+                                      address: FFAppState().sendto,
+                                      amount: FFAppState().sendamount,
+                                      mnemonic: getJsonField(
+                                        (rowUnlockResponse?.jsonBody ?? ''),
                                         r'''$.data''',
                                       ).toString(),
-                                      '0',
                                     ),
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyText1,
-                                  );
-                                },
-                              ),
-                            ],
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: SpinKitRipple(
+                                              color: Color(0xFFDA0004),
+                                              size: 40,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      final textGasResponse = snapshot.data;
+                                      return Text(
+                                        valueOrDefault<String>(
+                                          getJsonField(
+                                            (textGasResponse?.jsonBody ?? ''),
+                                            r'''$.data''',
+                                          ).toString(),
+                                          '0',
+                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -417,14 +443,21 @@ class _TransferFundsVerifyWidgetState extends State<TransferFundsVerifyWidget>
                       children: [
                         FFButtonWidget(
                           onPressed: () async {
+                            unlockData = await UnlockCall.call(
+                              uid: currentUserUid,
+                              password: FFAppState().password,
+                            );
                             transferTx = await TransferCall.call(
                               address: FFAppState().sendto,
                               amount: FFAppState().sendamount,
-                              mnemonic: FFAppState().mnemonic,
+                              mnemonic: getJsonField(
+                                (unlockData?.jsonBody ?? ''),
+                                r'''$.data''',
+                              ).toString(),
                             );
                             if (getJsonField(
                               (transferTx?.jsonBody ?? ''),
-                              r'''$''',
+                              r'''$.data.transactionHash''',
                             )) {
                               context.pushNamed('transferComplete');
                             } else {
