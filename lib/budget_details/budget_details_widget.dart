@@ -1,9 +1,7 @@
 import '../backend/backend.dart';
-import '../budget_d_e_l_e_t_e/budget_d_e_l_e_t_e_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../payment_details/payment_details_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -50,7 +48,7 @@ class _BudgetDetailsWidgetState extends State<BudgetDetailsWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                Navigator.pop(context);
+                context.pop();
               },
               child: Icon(
                 Icons.chevron_left_rounded,
@@ -71,16 +69,20 @@ class _BudgetDetailsWidgetState extends State<BudgetDetailsWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.bottomToTop,
-                        duration: Duration(milliseconds: 220),
-                        reverseDuration: Duration(milliseconds: 220),
-                        child: BudgetDELETEWidget(
-                          budgetList: budgetDetailsBudgetsRecord.reference,
+                    context.pushNamed(
+                      'budget_DELETE',
+                      queryParams: {
+                        'budgetList': serializeParam(
+                            budgetDetailsBudgetsRecord.reference,
+                            ParamType.DocumentReference),
+                      }.withoutNulls,
+                      extra: <String, dynamic>{
+                        kTransitionInfoKey: TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.bottomToTop,
+                          duration: Duration(milliseconds: 220),
                         ),
-                      ),
+                      },
                     );
                   },
                 ),
@@ -283,19 +285,18 @@ class _BudgetDetailsWidgetState extends State<BudgetDetailsWidget> {
                                       0, 0, 0, 8),
                                   child: InkWell(
                                     onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PaymentDetailsWidget(
-                                            transactionDetails:
-                                                transactionListTransactionsRecord
-                                                    .reference,
-                                            userSpent:
-                                                transactionListTransactionsRecord
-                                                    .user,
-                                          ),
-                                        ),
+                                      context.pushNamed(
+                                        'paymentDetails',
+                                        queryParams: {
+                                          'transactionDetails': serializeParam(
+                                              transactionListTransactionsRecord
+                                                  .reference,
+                                              ParamType.DocumentReference),
+                                          'userSpent': serializeParam(
+                                              transactionListTransactionsRecord
+                                                  .user,
+                                              ParamType.DocumentReference),
+                                        }.withoutNulls,
                                       );
                                     },
                                     child: Container(

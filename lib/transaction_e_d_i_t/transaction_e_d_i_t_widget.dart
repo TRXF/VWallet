@@ -180,7 +180,7 @@ class _TransactionEDITWidgetState extends State<TransactionEDITWidget>
                                     size: 30,
                                   ),
                                   onPressed: () async {
-                                    Navigator.pop(context);
+                                    context.pop();
                                   },
                                 ),
                               ),
@@ -470,7 +470,7 @@ class _TransactionEDITWidgetState extends State<TransactionEDITWidget>
                                   await transactionEDITTransactionsRecord
                                       .reference
                                       .update(transactionsUpdateData);
-                                  Navigator.pop(context);
+                                  context.pop();
                                 },
                                 text: 'Update Transaction',
                                 options: FFButtonOptions(

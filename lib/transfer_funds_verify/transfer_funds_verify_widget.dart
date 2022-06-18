@@ -5,22 +5,21 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TransferFundsWidget extends StatefulWidget {
-  const TransferFundsWidget({Key key}) : super(key: key);
+class TransferFundsVerifyWidget extends StatefulWidget {
+  const TransferFundsVerifyWidget({Key key}) : super(key: key);
 
   @override
-  _TransferFundsWidgetState createState() => _TransferFundsWidgetState();
+  _TransferFundsVerifyWidgetState createState() =>
+      _TransferFundsVerifyWidgetState();
 }
 
-class _TransferFundsWidgetState extends State<TransferFundsWidget>
+class _TransferFundsVerifyWidgetState extends State<TransferFundsVerifyWidget>
     with TickerProviderStateMixin {
-  TextEditingController textController1;
-  TextEditingController textController2;
+  ApiCallResponse transferTx;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'rowOnPageLoadAnimation1': AnimationInfo(
@@ -35,34 +34,6 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
       finalState: AnimationState(
         offset: Offset(0, 0),
         scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'textFieldOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      delay: 170,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 80),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        opacity: 1,
-      ),
-    ),
-    'textFieldOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      delay: 170,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 80),
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
         opacity: 1,
       ),
     ),
@@ -106,9 +77,6 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
-
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
   }
 
   @override
@@ -131,7 +99,7 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
             ),
           );
         }
-        final transferFundsUserResponse = snapshot.data;
+        final transferFundsVerifyUserResponse = snapshot.data;
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
@@ -314,123 +282,123 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
                               [animationsMap['rowOnPageLoadAnimation1']]),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: TextFormField(
-                            controller: textController1,
-                            onChanged: (_) => EasyDebounce.debounce(
-                              'textController1',
-                              Duration(milliseconds: 2000),
-                              () => setState(() {}),
-                            ),
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Address',
-                              labelStyle: FlutterFlowTheme.of(context)
-                                  .title1
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color:
-                                        FlutterFlowTheme.of(context).grayLight,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).background,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Send to',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 20,
+                                    ),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).background,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                  20, 24, 24, 24),
-                              suffixIcon: textController1.text.isNotEmpty
-                                  ? InkWell(
-                                      onTap: () => setState(
-                                        () => textController1?.clear(),
-                                      ),
-                                      child: Icon(
-                                        Icons.clear,
-                                        color: Color(0xFF757575),
-                                        size: 22,
-                                      ),
-                                    )
-                                  : null,
-                            ),
-                            style: FlutterFlowTheme.of(context).title1.override(
-                                  fontFamily: 'Lexend Deca',
-                                  fontSize: 24,
-                                ),
-                          ).animated(
-                              [animationsMap['textFieldOnPageLoadAnimation1']]),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: TextFormField(
-                            controller: textController2,
-                            onChanged: (_) => EasyDebounce.debounce(
-                              'textController2',
-                              Duration(milliseconds: 2000),
-                              () => setState(() {}),
-                            ),
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Amount',
-                              labelStyle: FlutterFlowTheme.of(context)
-                                  .title1
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color:
-                                        FlutterFlowTheme.of(context).grayLight,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).background,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).background,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                  20, 24, 24, 24),
-                              suffixIcon: textController2.text.isNotEmpty
-                                  ? InkWell(
-                                      onTap: () => setState(
-                                        () => textController2?.clear(),
-                                      ),
-                                      child: Icon(
-                                        Icons.clear,
-                                        color: Color(0xFF757575),
-                                        size: 22,
-                                      ),
-                                    )
-                                  : null,
-                            ),
-                            style: FlutterFlowTheme.of(context).title1,
-                          ).animated(
-                              [animationsMap['textFieldOnPageLoadAnimation2']]),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                          child: Text(
-                            textController1.text,
-                            style: FlutterFlowTheme.of(context).bodyText1,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                FFAppState().sendto,
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Amount ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 20,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                valueOrDefault<String>(
+                                  FFAppState().sendamount,
+                                  '0',
+                                ),
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Estimated Gas',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 20,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              FutureBuilder<ApiCallResponse>(
+                                future: GasCall.call(
+                                  address: FFAppState().sendto,
+                                  amount: FFAppState().sendamount,
+                                  mnemonic: FFAppState().mnemonic,
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: SpinKitRipple(
+                                          color: Color(0xFFDA0004),
+                                          size: 40,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final textGasResponse = snapshot.data;
+                                  return Text(
+                                    valueOrDefault<String>(
+                                      getJsonField(
+                                        (textGasResponse?.jsonBody ?? ''),
+                                        r'''$.data''',
+                                      ).toString(),
+                                      '0',
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyText1,
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -449,13 +417,39 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
                       children: [
                         FFButtonWidget(
                           onPressed: () async {
-                            setState(() =>
-                                FFAppState().sendto = textController1.text);
-                            setState(() =>
-                                FFAppState().sendamount = textController2.text);
-                            context.pushNamed('transferFundsVerify');
+                            transferTx = await TransferCall.call(
+                              address: FFAppState().sendto,
+                              amount: FFAppState().sendamount,
+                              mnemonic: FFAppState().mnemonic,
+                            );
+                            if (getJsonField(
+                              (transferTx?.jsonBody ?? ''),
+                              r'''$''',
+                            )) {
+                              context.pushNamed('transferComplete');
+                            } else {
+                              await showDialog(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Error'),
+                                    content: Text('Transfer Faild!'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(alertDialogContext),
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              context.pushNamed('MY_Card');
+                            }
+
+                            setState(() {});
                           },
-                          text: 'Verify',
+                          text: 'Send Transfer',
                           options: FFButtonOptions(
                             width: 300,
                             height: 70,

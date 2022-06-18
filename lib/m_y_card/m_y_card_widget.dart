@@ -4,8 +4,8 @@ import '../components/pause_card_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../transfer_funds/transfer_funds_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,6 +20,10 @@ class MYCardWidget extends StatefulWidget {
 
 class _MYCardWidgetState extends State<MYCardWidget>
     with TickerProviderStateMixin {
+  ApiCallResponse vagaWallet;
+  ApiCallResponse wallet;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  var txhash = '';
   final animationsMap = {
     'rowOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -94,12 +98,37 @@ class _MYCardWidgetState extends State<MYCardWidget>
       ),
     ),
   };
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  var txhash = '';
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance?.addPostFrameCallback((_) async {
+      vagaWallet = await UserCall.call(
+        uid: currentUserUid,
+      );
+      if (getJsonField(
+        (vagaWallet?.jsonBody ?? ''),
+        r'''$.data.vaga_wallet''',
+      )) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+      } else {
+        wallet = await CreateWalletCall.call(
+          uid: currentUserUid,
+        );
+        setState(() => FFAppState().mnemonic = getJsonField(
+              (wallet?.jsonBody ?? ''),
+              r'''$.data.wallet.mnemonic''',
+            ).toString());
+        setState(() => FFAppState().privatekey = getJsonField(
+              (wallet?.jsonBody ?? ''),
+              r'''$.data.wallet.privateKey''',
+            ).toString());
+      }
+
+      await Future.delayed(const Duration(milliseconds: 1000));
+    });
+
     startPageLoadAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
@@ -111,10 +140,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
   Widget build(BuildContext context) {
     return FutureBuilder<ApiCallResponse>(
       future: UserCall.call(
-        uid: valueOrDefault<String>(
-          currentUserUid,
-          '0',
-        ),
+        uid: currentUserUid,
       ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
@@ -137,7 +163,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
             backgroundColor: FlutterFlowTheme.of(context).background,
             automaticallyImplyLeading: false,
             title: Text(
-              'VagaWallet',
+              txhash,
               style: FlutterFlowTheme.of(context).title1,
             ),
             actions: [],
@@ -152,6 +178,17 @@ class _MYCardWidgetState extends State<MYCardWidget>
                 'Cancel', // cancel button text
                 true, // whether to show the flash icon
                 ScanMode.QR,
+              );
+
+              setState(() => FFAppState().txblob = txhash);
+              context.pushNamed(
+                'ProcessQR',
+                extra: <String, dynamic>{
+                  kTransitionInfoKey: TransitionInfo(
+                    hasTransition: true,
+                    transitionType: PageTransitionType.bottomToTop,
+                  ),
+                },
               );
 
               setState(() {});
@@ -312,22 +349,28 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                           );
                                         }
                                         final textUserResponse = snapshot.data;
-                                        return Text(
-                                          UserCall.vagawallet(
-                                            (textUserResponse?.jsonBody ?? ''),
-                                          ).toString().maybeHandleOverflow(
-                                                maxChars: 32,
-                                                replacement: '…',
-                                              ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Roboto Mono',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .textColor,
-                                                fontSize: 10,
-                                              ),
+                                        return InkWell(
+                                          onTap: () async {
+                                            context.pushNamed('WalletDetails');
+                                          },
+                                          child: Text(
+                                            UserCall.vagawallet(
+                                              (textUserResponse?.jsonBody ??
+                                                  ''),
+                                            ).toString().maybeHandleOverflow(
+                                                  maxChars: 32,
+                                                  replacement: '…',
+                                                ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Roboto Mono',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .textColor,
+                                                  fontSize: 10,
+                                                ),
+                                          ),
                                         );
                                       },
                                     ),
@@ -539,15 +582,16 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                 ),
                                 child: InkWell(
                                   onTap: () async {
-                                    await Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        type: PageTransitionType.bottomToTop,
-                                        duration: Duration(milliseconds: 220),
-                                        reverseDuration:
-                                            Duration(milliseconds: 220),
-                                        child: TransferFundsWidget(),
-                                      ),
+                                    context.pushNamed(
+                                      'transferFunds',
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.bottomToTop,
+                                          duration: Duration(milliseconds: 220),
+                                        ),
+                                      },
                                     );
                                   },
                                   child: Column(
@@ -641,9 +685,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
                           child: FutureBuilder<ApiCallResponse>(
                             future: TransactionsCall.call(
-                              address: UserCall.vagawallet(
-                                (mYCardUserResponse?.jsonBody ?? ''),
-                              ).toString(),
+                              address: FFAppState().mainAddress,
                             ),
                             builder: (context, snapshot) {
                               // Customize what your widget looks like when it's loading.

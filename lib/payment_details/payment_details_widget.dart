@@ -2,7 +2,6 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../transaction_e_d_i_t/transaction_e_d_i_t_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class _PaymentDetailsWidgetState extends State<PaymentDetailsWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                Navigator.pop(context);
+                context.pop();
               },
               child: Icon(
                 Icons.chevron_left_rounded,
@@ -77,14 +76,13 @@ class _PaymentDetailsWidgetState extends State<PaymentDetailsWidget> {
                     size: 24,
                   ),
                   onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TransactionEDITWidget(
-                          transactionDetails:
-                              paymentDetailsTransactionsRecord.reference,
-                        ),
-                      ),
+                    context.pushNamed(
+                      'transaction_EDIT',
+                      queryParams: {
+                        'transactionDetails': serializeParam(
+                            paymentDetailsTransactionsRecord.reference,
+                            ParamType.DocumentReference),
+                      }.withoutNulls,
                     );
                   },
                 ),

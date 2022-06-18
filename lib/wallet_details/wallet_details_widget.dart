@@ -2,7 +2,7 @@ import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../main.dart';
+import '../custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,12 +45,7 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NavBarPage(initialPage: 'MY_Card'),
-                  ),
-                );
+                context.pushNamed('MY_Card');
               },
               child: Icon(
                 Icons.chevron_left_rounded,
@@ -75,103 +70,225 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
                 children: [
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Row(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                           child: Text(
-                            'Address',
-                            style: FlutterFlowTheme.of(context).bodyText1,
+                            'Wallet',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyText1
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: FlutterFlowTheme.of(context).textColor,
+                                  fontSize: 24,
+                                ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
-                        child: Text(
-                          UserCall.vagawallet(
-                            (walletDetailsUserResponse?.jsonBody ?? ''),
-                          ).toString(),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    fontSize: 10,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                          child: Text(
-                            'Mnemonic',
-                            style: FlutterFlowTheme.of(context).bodyText1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: Padding(
                           padding:
                               EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
                           child: Text(
-                            FFAppState().mnemonic,
-                            maxLines: 5,
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      fontSize: 10,
-                                      lineHeight: 1.5,
-                                    ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 60, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                          child: Text(
-                            'Private Key',
+                            'Your Wallet informations are stored on your device. Please make sure you have stored this information somewhere save aswell. ',
                             style: FlutterFlowTheme.of(context).bodyText1,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Row(
+                  Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
-                        child: Text(
-                          FFAppState().privatekey,
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    fontSize: 10,
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 0, 0, 0),
+                                  child: Text(
+                                    'Address',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: FlutterFlowTheme.of(context)
+                                              .textColor,
+                                        ),
                                   ),
-                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 10, 0, 0),
+                                child: Text(
+                                  UserCall.vagawallet(
+                                    (walletDetailsUserResponse?.jsonBody ?? ''),
+                                  ).toString(),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        fontSize: 10,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 0, 0, 0),
+                                  child: Text(
+                                    'Mnemonic',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: FlutterFlowTheme.of(context)
+                                              .textColor,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 10, 20, 0),
+                                  child: FutureBuilder<ApiCallResponse>(
+                                    future: UnlockCall.call(
+                                      uid: currentUserUid,
+                                      password: '1',
+                                    ),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: SpinKitRipple(
+                                              color: Color(0xFFDA0004),
+                                              size: 40,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      final textUnlockResponse = snapshot.data;
+                                      return InkWell(
+                                        onTap: () async {
+                                          await actions.copy(
+                                            getJsonField(
+                                              (textUnlockResponse?.jsonBody ??
+                                                  ''),
+                                              r'''$.data''',
+                                            ).toString(),
+                                          );
+                                        },
+                                        child: Text(
+                                          getJsonField(
+                                            (textUnlockResponse?.jsonBody ??
+                                                ''),
+                                            r'''$.data''',
+                                          ).toString(),
+                                          maxLines: 5,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Lexend Deca',
+                                                fontSize: 12,
+                                                lineHeight: 1.5,
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 60, 0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 0, 0, 0),
+                                  child: Text(
+                                    'Private Key',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: FlutterFlowTheme.of(context)
+                                              .textColor,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 10, 20, 0),
+                                  child: Text(
+                                    FFAppState().privatekey,
+                                    maxLines: 2,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          fontSize: 12,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.75, 0),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                      child: Image.asset(
+                        'assets/images/Book3.png',
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ],
               ),

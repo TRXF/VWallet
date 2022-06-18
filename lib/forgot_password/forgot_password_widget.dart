@@ -32,7 +32,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
-            Navigator.pop(context);
+            context.pop();
           },
           child: Icon(
             Icons.chevron_left_rounded,
@@ -57,7 +57,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
           image: DecorationImage(
             fit: BoxFit.fitWidth,
             image: Image.asset(
-              'assets/images/login_bg@2x.png',
+              'assets/images/_bg3.png',
             ).image,
           ),
         ),

@@ -11,6 +11,7 @@ import 'flutter_flow/internationalization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
 
 void main() async {
@@ -36,19 +37,22 @@ class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
 
   Stream<VWalletFirebaseUser> userStream;
-  VWalletFirebaseUser initialUser;
-  bool displaySplashImage = true;
+
+  AppStateNotifier _appStateNotifier;
+  GoRouter _router;
 
   final authUserSub = authenticatedUserStream.listen((_) {});
 
   @override
   void initState() {
     super.initState();
+    _appStateNotifier = AppStateNotifier();
+    _router = createRouter(_appStateNotifier);
     userStream = vWalletFirebaseUserStream()
-      ..listen((user) => initialUser ?? setState(() => initialUser = user));
+      ..listen((user) => _appStateNotifier.update(user));
     Future.delayed(
       Duration(seconds: 1),
-      () => setState(() => displaySplashImage = false),
+      () => _appStateNotifier.stopShowingSplashImage(),
     );
   }
 
@@ -66,7 +70,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'VWallet',
       localizationsDelegates: [
         FFLocalizationsDelegate(),
@@ -80,19 +84,8 @@ class _MyAppState extends State<MyApp> {
       ],
       theme: ThemeData(brightness: Brightness.light),
       themeMode: _themeMode,
-      home: initialUser == null || displaySplashImage
-          ? Container(
-              color: Colors.transparent,
-              child: Builder(
-                builder: (context) => Image.asset(
-                  'assets/images/app_screen.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            )
-          : currentUser.loggedIn
-              ? NavBarPage()
-              : LoginPageWidget(),
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
     );
   }
 }

@@ -315,7 +315,7 @@ class _EditBookingWidgetState extends State<EditBookingWidget> {
                   children: [
                     FFButtonWidget(
                       onPressed: () async {
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       text: 'Cancel',
                       options: FFButtonOptions(
@@ -348,7 +348,7 @@ class _EditBookingWidgetState extends State<EditBookingWidget> {
                         );
                         await widget.userAppointment.reference
                             .update(appointmentsUpdateData);
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       text: 'Save Changes',
                       options: FFButtonOptions(

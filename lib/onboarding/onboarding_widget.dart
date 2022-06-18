@@ -1,4 +1,3 @@
-import '../create_budget_begin/create_budget_begin_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -100,11 +99,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 20),
                                         child: Image.asset(
-                                          'assets/images/fin_onboarding_1@2x.png',
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.7,
+                                          'assets/images/_4.png',
+                                          width: 300,
                                           height: 300,
                                           fit: BoxFit.fitWidth,
                                         ),
@@ -170,7 +166,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 20),
                                         child: Image.asset(
-                                          'assets/images/fin_onboarding_2@2x.png',
+                                          'assets/images/_5.png',
                                           width: 300,
                                           height: 300,
                                           fit: BoxFit.fitHeight,
@@ -237,7 +233,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 30, 0, 30),
                                         child: Image.asset(
-                                          'assets/images/fin_onboarding_3@2x.png',
+                                          'assets/images/_18.png',
                                           width: 300,
                                           height: 250,
                                           fit: BoxFit.fitWidth,
@@ -336,17 +332,18 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                     padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.bottomToTop,
-                            duration: Duration(milliseconds: 220),
-                            reverseDuration: Duration(milliseconds: 220),
-                            child: CreateBudgetBeginWidget(),
-                          ),
+                        context.pushNamed(
+                          'createBudgetBegin',
+                          extra: <String, dynamic>{
+                            kTransitionInfoKey: TransitionInfo(
+                              hasTransition: true,
+                              transitionType: PageTransitionType.bottomToTop,
+                              duration: Duration(milliseconds: 220),
+                            ),
+                          },
                         );
                       },
-                      text: 'Create Your Budget',
+                      text: 'Create Budgets',
                       options: FFButtonOptions(
                         width: 200,
                         height: 50,

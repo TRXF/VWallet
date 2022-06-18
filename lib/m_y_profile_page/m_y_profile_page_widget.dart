@@ -1,15 +1,8 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../change_password/change_password_widget.dart';
-import '../edit_profile/edit_profile_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../login_page/login_page_widget.dart';
-import '../notifications_settings/notifications_settings_widget.dart';
-import '../privacy_policy/privacy_policy_widget.dart';
-import '../tutorial_p_r_o_f_i_l_e/tutorial_p_r_o_f_i_l_e_widget.dart';
-import '../wallet/wallet_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -138,15 +131,11 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                             size: 24,
                                           ),
                                           onPressed: () async {
+                                            GoRouter.of(context)
+                                                .prepareAuthEvent();
                                             await signOut();
-                                            await Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPageWidget(),
-                                              ),
-                                              (r) => false,
-                                            );
+                                            context.goNamedAuth(
+                                                'loginPage', mounted);
                                           },
                                         ),
                                       ),
@@ -236,13 +225,13 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditProfileWidget(
-                              userProfile: mYProfilePageUsersRecord.reference,
-                            ),
-                          ),
+                        context.pushNamed(
+                          'editProfile',
+                          queryParams: {
+                            'userProfile': serializeParam(
+                                mYProfilePageUsersRecord.reference,
+                                ParamType.DocumentReference),
+                          }.withoutNulls,
                         );
                       },
                       child: Material(
@@ -310,12 +299,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChangePasswordWidget(),
-                            ),
-                          );
+                          context.pushNamed('changePassword');
                         },
                         child: Material(
                           color: Colors.transparent,
@@ -384,13 +368,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  NotificationsSettingsWidget(),
-                            ),
-                          );
+                          context.pushNamed('notificationsSettings');
                         },
                         child: Material(
                           color: Colors.transparent,
@@ -458,12 +436,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TutorialPROFILEWidget(),
-                            ),
-                          );
+                          context.pushNamed('tutorial_PROFILE');
                         },
                         child: Material(
                           color: Colors.transparent,
@@ -531,12 +504,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PrivacyPolicyWidget(),
-                            ),
-                          );
+                          context.pushNamed('privacyPolicy');
                         },
                         child: Material(
                           color: Colors.transparent,
@@ -604,12 +572,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WalletWidget(),
-                            ),
-                          );
+                          context.pushNamed('Wallet');
                         },
                         child: Material(
                           color: Colors.transparent,
@@ -638,6 +601,74 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                 children: [
                                   Text(
                                     'Wallets',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                  ),
+                                  FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 30,
+                                    buttonSize: 46,
+                                    icon: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xFF95A1AC),
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      print('IconButton pressed ...');
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          context.pushNamed('ProcessQR');
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).background,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Color(0xFF090F13),
+                                width: 2,
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Test',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(

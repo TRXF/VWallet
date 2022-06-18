@@ -41,42 +41,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:74620928473:android:ad5382ed46a978bfaf19c8",
-        "android_client_info": {
-          "package_name": "com.flutterflow.finwallet"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "74620928473-jgf126pha5jqrrom50nqosk9jo4va7it.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA__b57kLgQp1imWL3idY7PJr9lHckQX5E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "74620928473-jgf126pha5jqrrom50nqosk9jo4va7it.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "74620928473-3mqblkje6911hplosto97r433d7fijij.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "app.vagabond.io"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

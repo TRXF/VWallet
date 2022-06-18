@@ -5,7 +5,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -119,7 +118,7 @@ class _CreateBudgetBeginWidgetState extends State<CreateBudgetBeginWidget>
                                 size: 30,
                               ),
                               onPressed: () async {
-                                Navigator.pop(context);
+                                context.pop();
                               },
                             ),
                           ),
@@ -323,13 +322,7 @@ class _CreateBudgetBeginWidgetState extends State<CreateBudgetBeginWidget>
                               };
                               await buttonBudgetListRecord.reference
                                   .update(budgetListUpdateData);
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      NavBarPage(initialPage: 'MY_Card'),
-                                ),
-                              );
+                              context.pushNamed('MY_Card');
                             },
                             text: 'Create Budget',
                             options: FFButtonOptions(

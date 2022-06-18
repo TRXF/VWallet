@@ -6,7 +6,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
-import '../onboarding/onboarding_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -166,7 +165,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
           image: DecorationImage(
             fit: BoxFit.fitWidth,
             image: Image.asset(
-              'assets/images/login_bg@2x.png',
+              'assets/images/_bg.png',
             ).image,
           ),
         ),
@@ -389,12 +388,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                         );
                         await buttonLoginUsersRecord.reference
                             .update(usersUpdateData);
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OnboardingWidget(),
-                          ),
-                        );
+                        context.pushNamed('onboarding');
                       },
                       text: 'Complete Profile',
                       options: FFButtonOptions(
@@ -438,12 +432,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                     final buttonLoginUsersRecord = snapshot.data;
                     return FFButtonWidget(
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OnboardingWidget(),
-                          ),
-                        );
+                        context.pushNamed('onboarding');
                       },
                       text: 'Skip for Now',
                       options: FFButtonOptions(

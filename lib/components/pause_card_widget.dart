@@ -57,7 +57,7 @@ class _PauseCardWidgetState extends State<PauseCardWidget> {
                 children: [
                   FFButtonWidget(
                     onPressed: () async {
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     text: 'Nevermind',
                     options: FFButtonOptions(
@@ -74,7 +74,7 @@ class _PauseCardWidgetState extends State<PauseCardWidget> {
                   ),
                   FFButtonWidget(
                     onPressed: () async {
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     text: 'Yes, Pause',
                     options: FFButtonOptions(

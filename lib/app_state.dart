@@ -17,6 +17,8 @@ class FFAppState {
     _password = prefs.getString('ff_password') ?? _password;
     _mnemonic = prefs.getString('ff_mnemonic') ?? _mnemonic;
     _privatekey = prefs.getString('ff_privatekey') ?? _privatekey;
+    _mainAddress = prefs.getString('ff_mainAddress') ?? _mainAddress;
+    _userData = prefs.getString('ff_userData') ?? _userData;
   }
 
   SharedPreferences prefs;
@@ -42,6 +44,28 @@ class FFAppState {
   set privatekey(String _value) {
     _privatekey = _value;
     prefs.setString('ff_privatekey', _value);
+  }
+
+  String type = '';
+
+  String txblob = '';
+
+  String sendto = '';
+
+  String sendamount = '';
+
+  String _mainAddress = '';
+  String get mainAddress => _mainAddress;
+  set mainAddress(String _value) {
+    _mainAddress = _value;
+    prefs.setString('ff_mainAddress', _value);
+  }
+
+  String _userData = '';
+  String get userData => _userData;
+  set userData(String _value) {
+    _userData = _value;
+    prefs.setString('ff_userData', _value);
   }
 }
 

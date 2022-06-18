@@ -1,11 +1,8 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../complete_profile/complete_profile_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../login_page/login_page_widget.dart';
-import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -52,12 +49,6 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                 height: MediaQuery.of(context).size.height * 1,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).background,
-                  image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: Image.asset(
-                      'assets/images/createAccount_bg@2x.png',
-                    ).image,
-                  ),
                 ),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
@@ -71,8 +62,8 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Image.asset(
-                              'assets/images/finWallet_logo_landscape.png',
-                              width: 170,
+                              'assets/images/android-chrome-512x512.png',
+                              width: 60,
                               height: 60,
                               fit: BoxFit.fitWidth,
                             ),
@@ -294,44 +285,8 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0, 24, 0, 24),
                                 child: FFButtonWidget(
-                                  onPressed: () async {
-                                    if (passwordCreateController?.text !=
-                                        passwordConfirmController?.text) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Passwords don\'t match!',
-                                          ),
-                                        ),
-                                      );
-                                      return;
-                                    }
-
-                                    final user = await createAccountWithEmail(
-                                      context,
-                                      emailAddressController.text,
-                                      passwordCreateController.text,
-                                    );
-                                    if (user == null) {
-                                      return;
-                                    }
-
-                                    final budgetListCreateData =
-                                        createBudgetListRecordData(
-                                      budgetUser: currentUserReference,
-                                    );
-                                    await BudgetListRecord.collection
-                                        .doc()
-                                        .set(budgetListCreateData);
-                                    await Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CompleteProfileWidget(),
-                                      ),
-                                      (r) => false,
-                                    );
+                                  onPressed: () {
+                                    print('Button pressed ...');
                                   },
                                   text: 'Create Account',
                                   options: FFButtonOptions(
@@ -370,17 +325,19 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                                       children: [
                                         FFButtonWidget(
                                           onPressed: () async {
-                                            await Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .leftToRight,
-                                                duration:
-                                                    Duration(milliseconds: 200),
-                                                reverseDuration:
-                                                    Duration(milliseconds: 200),
-                                                child: LoginPageWidget(),
-                                              ),
+                                            context.pushNamed(
+                                              'loginPage',
+                                              extra: <String, dynamic>{
+                                                kTransitionInfoKey:
+                                                    TransitionInfo(
+                                                  hasTransition: true,
+                                                  transitionType:
+                                                      PageTransitionType
+                                                          .leftToRight,
+                                                  duration: Duration(
+                                                      milliseconds: 200),
+                                                ),
+                                              },
                                             );
                                           },
                                           text: 'Login',
@@ -430,6 +387,7 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            GoRouter.of(context).prepareAuthEvent();
                             final user = await signInAnonymously(context);
                             if (user == null) {
                               return;
@@ -442,14 +400,7 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                             await BudgetListRecord.collection
                                 .doc()
                                 .set(budgetListCreateData);
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NavBarPage(initialPage: 'MY_Card'),
-                              ),
-                              (r) => false,
-                            );
+                            context.goNamedAuth('MY_Card', mounted);
                           },
                           text: 'Continue as Guest',
                           options: FFButtonOptions(

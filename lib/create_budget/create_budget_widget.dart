@@ -117,7 +117,7 @@ class _CreateBudgetWidgetState extends State<CreateBudgetWidget>
                                 size: 30,
                               ),
                               onPressed: () async {
-                                Navigator.pop(context);
+                                context.pop();
                               },
                             ),
                           ),
@@ -321,7 +321,7 @@ class _CreateBudgetWidgetState extends State<CreateBudgetWidget>
                               };
                               await buttonBudgetListRecord.reference
                                   .update(budgetListUpdateData);
-                              Navigator.pop(context);
+                              context.pop();
                             },
                             text: 'Create Budget',
                             options: FFButtonOptions(

@@ -1,11 +1,7 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../forgot_password/forgot_password_widget.dart';
-import '../register_account/register_account_widget.dart';
-import '../wallet_details/wallet_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,8 +14,6 @@ class LoginPageWidget extends StatefulWidget {
 }
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
-  ApiCallResponse vagaWallet;
-  ApiCallResponse wallet;
   TextEditingController emailAddressLoginController;
   TextEditingController passwordLoginController;
   bool passwordLoginVisibility;
@@ -225,13 +219,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         0, 24, 0, 24),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ForgotPasswordWidget(),
-                                          ),
-                                        );
+                                        context.pushNamed('forgotPassword');
                                       },
                                       text: 'Forgot Password?',
                                       options: FFButtonOptions(
@@ -255,7 +243,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   ),
                                   FFButtonWidget(
                                     onPressed: () async {
-                                      var _shouldSetState = false;
+                                      GoRouter.of(context).prepareAuthEvent();
 
                                       final user = await signInWithEmail(
                                         context,
@@ -268,79 +256,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
                                       setState(() => FFAppState().password =
                                           passwordLoginController.text);
-                                      vagaWallet = await UserCall.call(
-                                        uid: currentUserUid,
+                                      context.pushNamedAuth(
+                                        'LoadingScreen',
+                                        mounted,
+                                        extra: <String, dynamic>{
+                                          kTransitionInfoKey: TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.rightToLeft,
+                                          ),
+                                        },
                                       );
-                                      _shouldSetState = true;
-                                      if (getJsonField(
-                                        (vagaWallet?.jsonBody ?? ''),
-                                        r'''$.vaga_wallet''',
-                                      )) {
-                                        setState(() => FFAppState().mnemonic =
-                                                getJsonField(
-                                              (vagaWallet?.jsonBody ?? ''),
-                                              r'''$.vaga_wallet''',
-                                            ).toString());
-                                      } else {
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title: Text(
-                                                          'No Wallet Found'),
-                                                      content: Text(
-                                                          'Do you want to create a new VagaWallet?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: Text('No'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child: Text('Yes'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          wallet = await CreateWalletCall.call(
-                                            uid: currentUserUid,
-                                          );
-                                          _shouldSetState = true;
-                                          setState(() => FFAppState().mnemonic =
-                                                  getJsonField(
-                                                (wallet?.jsonBody ?? ''),
-                                                r'''$.data.wallet.mnemonic''',
-                                              ).toString());
-                                          setState(() => FFAppState()
-                                                  .privatekey = getJsonField(
-                                                (wallet?.jsonBody ?? ''),
-                                                r'''$.data.wallet.privateKey''',
-                                              ).toString());
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  WalletDetailsWidget(),
-                                            ),
-                                          );
-                                        } else {
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        }
-                                      }
-
-                                      if (_shouldSetState) setState(() {});
                                     },
                                     text: 'Login',
                                     options: FFButtonOptions(
@@ -392,13 +318,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               AlignmentDirectional(-0.1, 0),
                                           child: FFButtonWidget(
                                             onPressed: () async {
-                                              await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RegisterAccountWidget(),
-                                                ),
-                                              );
+                                              context
+                                                  .pushNamed('registerAccount');
                                             },
                                             text: 'Create',
                                             options: FFButtonOptions(

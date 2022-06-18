@@ -1,7 +1,6 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -72,14 +71,15 @@ class _TransferCompleteWidgetState extends State<TransferCompleteWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 70),
               child: FFButtonWidget(
                 onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.leftToRight,
-                      duration: Duration(milliseconds: 200),
-                      reverseDuration: Duration(milliseconds: 200),
-                      child: NavBarPage(initialPage: 'MY_Card'),
-                    ),
+                  context.pushNamed(
+                    'MY_Card',
+                    extra: <String, dynamic>{
+                      kTransitionInfoKey: TransitionInfo(
+                        hasTransition: true,
+                        transitionType: PageTransitionType.leftToRight,
+                        duration: Duration(milliseconds: 200),
+                      ),
+                    },
                   );
                 },
                 text: 'Okay',

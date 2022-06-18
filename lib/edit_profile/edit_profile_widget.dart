@@ -62,7 +62,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                Navigator.pop(context);
+                context.pop();
               },
               child: Icon(
                 Icons.chevron_left_rounded,
@@ -366,7 +366,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         );
                         await editProfileUsersRecord.reference
                             .update(usersUpdateData);
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       text: 'Save Changes',
                       options: FFButtonOptions(

@@ -31,7 +31,7 @@ class _NotificationsSettingsWidgetState
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
-            Navigator.pop(context);
+            context.pop();
           },
           child: Icon(
             Icons.chevron_left_rounded,
@@ -161,7 +161,7 @@ class _NotificationsSettingsWidgetState
                   padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     text: 'Save Changes',
                     options: FFButtonOptions(

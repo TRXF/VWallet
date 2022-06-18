@@ -224,3 +224,29 @@ class GasCall {
     );
   }
 }
+
+class UnlockCall {
+  static Future<ApiCallResponse> call({
+    String uid = '',
+    String password = '',
+  }) {
+    final body = '''
+{
+  "uid": "${uid}",
+  "password": "${password}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Unlock',
+      apiUrl: 'https://vagabonds.cloud/api/app/unlock',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'uid': uid,
+        'password': password,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}

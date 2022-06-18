@@ -161,7 +161,7 @@ class _TransactionADDWidgetState extends State<TransactionADDWidget>
                                 size: 30,
                               ),
                               onPressed: () async {
-                                Navigator.pop(context);
+                                context.pop();
                               },
                             ),
                           ),
@@ -430,7 +430,7 @@ class _TransactionADDWidgetState extends State<TransactionADDWidget>
                               await TransactionsRecord.collection
                                   .doc()
                                   .set(transactionsCreateData);
-                              Navigator.pop(context);
+                              context.pop();
                             },
                             text: 'Add Transaction',
                             options: FFButtonOptions(

@@ -2,7 +2,6 @@ import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../payment_details/payment_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -595,12 +594,7 @@ class _HomePageAltWidgetState extends State<HomePageAltWidget> {
                         ),
                         child: InkWell(
                           onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentDetailsWidget(),
-                              ),
-                            );
+                            context.pushNamed('paymentDetails');
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.max,

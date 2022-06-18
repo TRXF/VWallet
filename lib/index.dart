@@ -1,5 +1,6 @@
 // Export pages
 export 'login_page/login_page_widget.dart' show LoginPageWidget;
+export 'loading_screen/loading_screen_widget.dart' show LoadingScreenWidget;
 export 'register_account/register_account_widget.dart'
     show RegisterAccountWidget;
 export 'forgot_password/forgot_password_widget.dart' show ForgotPasswordWidget;
@@ -14,6 +15,8 @@ export 'm_y_profile_page/m_y_profile_page_widget.dart' show MYProfilePageWidget;
 export 'payment_details/payment_details_widget.dart' show PaymentDetailsWidget;
 export 'budget_details/budget_details_widget.dart' show BudgetDetailsWidget;
 export 'transfer_funds/transfer_funds_widget.dart' show TransferFundsWidget;
+export 'transfer_funds_verify/transfer_funds_verify_widget.dart'
+    show TransferFundsVerifyWidget;
 export 'transfer_complete/transfer_complete_widget.dart'
     show TransferCompleteWidget;
 export 'request_funds/request_funds_widget.dart' show RequestFundsWidget;
@@ -22,8 +25,8 @@ export 'transaction_a_d_d/transaction_a_d_d_widget.dart'
     show TransactionADDWidget;
 export 'transaction_e_d_i_t/transaction_e_d_i_t_widget.dart'
     show TransactionEDITWidget;
-export 'edit_profile/edit_profile_widget.dart' show EditProfileWidget;
 export 'change_password/change_password_widget.dart' show ChangePasswordWidget;
+export 'edit_profile/edit_profile_widget.dart' show EditProfileWidget;
 export 'notifications_settings/notifications_settings_widget.dart'
     show NotificationsSettingsWidget;
 export 'privacy_policy/privacy_policy_widget.dart' show PrivacyPolicyWidget;
@@ -37,3 +40,4 @@ export 'budget_d_e_l_e_t_e/budget_d_e_l_e_t_e_widget.dart'
 export 'wallet/wallet_widget.dart' show WalletWidget;
 export 'verify_tx/verify_tx_widget.dart' show VerifyTxWidget;
 export 'wallet_details/wallet_details_widget.dart' show WalletDetailsWidget;
+export 'process_q_r/process_q_r_widget.dart' show ProcessQRWidget;

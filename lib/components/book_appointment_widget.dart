@@ -442,7 +442,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
                       children: [
                         FFButtonWidget(
                           onPressed: () async {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           text: 'Cancel',
                           options: FFButtonOptions(
@@ -479,7 +479,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
                             await AppointmentsRecord.collection
                                 .doc()
                                 .set(appointmentsCreateData);
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           text: 'Book Now',
                           options: FFButtonOptions(
