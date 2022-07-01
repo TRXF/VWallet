@@ -30,6 +30,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       curve: Curves.bounceOut,
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 19),
@@ -44,6 +45,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 50,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 20),
@@ -58,6 +60,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 100,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 20),
@@ -72,6 +75,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 200,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
@@ -86,6 +90,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 200,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 60),
@@ -101,6 +106,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 400,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
@@ -116,6 +122,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 400,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 40),
@@ -162,6 +169,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 1,
         decoration: BoxDecoration(
+          color: Color(0xFF15181B),
           image: DecorationImage(
             fit: BoxFit.fitWidth,
             image: Image.asset(
@@ -174,7 +182,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 12),
                 child: InkWell(
                   onTap: () async {
                     final selectedMedia =

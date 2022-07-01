@@ -1,8 +1,11 @@
 import '../auth/auth_util.dart';
+import '../backend/api_requests/api_calls.dart';
+import '../components/service_down_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,14 +17,41 @@ class LoginPageWidget extends StatefulWidget {
 }
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
+  ApiCallResponse pong;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  ApiCallResponse vagaWallet;
   TextEditingController emailAddressLoginController;
   TextEditingController passwordLoginController;
   bool passwordLoginVisibility;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance?.addPostFrameCallback((_) async {
+      pong = await HealthCheckCall.call();
+      if (!((getJsonField(
+            (pong?.jsonBody ?? ''),
+            r'''$.pong''',
+          ) !=
+          null))) {
+        await showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (context) {
+            return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Container(
+                height: 500,
+                child: ServiceDownWidget(),
+              ),
+            );
+          },
+        );
+      }
+    });
+
     emailAddressLoginController = TextEditingController();
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
@@ -55,11 +85,15 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              'assets/images/android-chrome-512x512.png',
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.fitWidth,
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                              child: Image.asset(
+                                'assets/images/android-chrome-512x512.png',
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.fitWidth,
+                              ),
                             ),
                           ],
                         ),
@@ -85,10 +119,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Text(
-                                      'Create your account below.',
-                                      style: FlutterFlowTheme.of(context)
-                                          .subtitle1,
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 20),
+                                      child: Text(
+                                        'Login to your account.',
+                                        style: FlutterFlowTheme.of(context)
+                                            .subtitle1,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -146,7 +184,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               ),
                               Padding(
                                 padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                                    EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                                 child: TextFormField(
                                   controller: passwordLoginController,
                                   obscureText: !passwordLoginVisibility,
@@ -209,152 +247,99 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       ),
                                 ),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 24, 0, 24),
-                                    child: FFButtonWidget(
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 24, 0, 24),
+                                      child: FFButtonWidget(
+                                        onPressed: () async {
+                                          context.pushNamed('forgotPassword');
+                                        },
+                                        text: 'Forgot Password?',
+                                        options: FFButtonOptions(
+                                          width: 170,
+                                          height: 40,
+                                          color: Color(0x001A1F24),
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .subtitle2
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Colors.white,
+                                                  ),
+                                          elevation: 0,
+                                          borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1,
+                                          ),
+                                          borderRadius: 8,
+                                        ),
+                                      ),
+                                    ),
+                                    FFButtonWidget(
                                       onPressed: () async {
-                                        context.pushNamed('forgotPassword');
+                                        GoRouter.of(context).prepareAuthEvent();
+
+                                        final user = await signInWithEmail(
+                                          context,
+                                          emailAddressLoginController.text,
+                                          passwordLoginController.text,
+                                        );
+                                        if (user == null) {
+                                          return;
+                                        }
+
+                                        setState(() => FFAppState().password =
+                                            passwordLoginController.text);
+                                        vagaWallet = await UserCall.call(
+                                          uid: currentUserUid,
+                                        );
+                                        if ((getJsonField(
+                                              (vagaWallet?.jsonBody ?? ''),
+                                              r'''$.data.vaga_wallet''',
+                                            ) !=
+                                            null)) {
+                                          await Future.delayed(const Duration(
+                                              milliseconds: 1000));
+                                          context.pushNamedAuth(
+                                              'MY_Card', mounted);
+                                        } else {
+                                          context.pushNamedAuth(
+                                              'onboarding', mounted);
+                                        }
+
+                                        setState(() {});
                                       },
-                                      text: 'Forgot Password?',
+                                      text: 'Login',
                                       options: FFButtonOptions(
-                                        width: 170,
-                                        height: 40,
-                                        color: Color(0x001A1F24),
+                                        width: 120,
+                                        height: 50,
+                                        color: Color(0xFFDA0004),
                                         textStyle: FlutterFlowTheme.of(context)
                                             .subtitle2
                                             .override(
                                               fontFamily: 'Lexend Deca',
-                                              color: Colors.white,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .textColor,
                                             ),
-                                        elevation: 0,
+                                        elevation: 3,
                                         borderSide: BorderSide(
                                           color: Colors.transparent,
                                           width: 1,
                                         ),
-                                        borderRadius: 8,
+                                        borderRadius: 30,
                                       ),
                                     ),
-                                  ),
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      GoRouter.of(context).prepareAuthEvent();
-
-                                      final user = await signInWithEmail(
-                                        context,
-                                        emailAddressLoginController.text,
-                                        passwordLoginController.text,
-                                      );
-                                      if (user == null) {
-                                        return;
-                                      }
-
-                                      setState(() => FFAppState().password =
-                                          passwordLoginController.text);
-                                      context.pushNamedAuth(
-                                        'LoadingScreen',
-                                        mounted,
-                                        extra: <String, dynamic>{
-                                          kTransitionInfoKey: TransitionInfo(
-                                            hasTransition: true,
-                                            transitionType:
-                                                PageTransitionType.rightToLeft,
-                                          ),
-                                        },
-                                      );
-                                    },
-                                    text: 'Login',
-                                    options: FFButtonOptions(
-                                      width: 120,
-                                      height: 50,
-                                      color: Color(0xFFDA0004),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: FlutterFlowTheme.of(context)
-                                                .textColor,
-                                          ),
-                                      elevation: 3,
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
-                                      ),
-                                      borderRadius: 30,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height: 44,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .background,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Don\'t have an account?',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1,
-                                        ),
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional(-0.1, 0),
-                                          child: FFButtonWidget(
-                                            onPressed: () async {
-                                              context
-                                                  .pushNamed('registerAccount');
-                                            },
-                                            text: 'Create',
-                                            options: FFButtonOptions(
-                                              width: 70,
-                                              height: 40,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .background,
-                                              textStyle: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyText2
-                                                  .override(
-                                                    fontFamily: 'Lexend Deca',
-                                                    color: Color(0xFFDA0004),
-                                                  ),
-                                              borderSide: BorderSide(
-                                                color: Colors.transparent,
-                                                width: 1,
-                                              ),
-                                              borderRadius: 12,
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: AlignmentDirectional(0, 0),
-                                          child: Icon(
-                                            Icons.arrow_forward_rounded,
-                                            color: Color(0xFFDA0004),
-                                            size: 24,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),

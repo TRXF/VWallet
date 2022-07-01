@@ -34,6 +34,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
     'textFieldOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 9),
@@ -48,6 +49,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 40,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 20),
@@ -62,6 +64,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 60,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 30),
@@ -75,6 +78,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 90),
@@ -90,6 +94,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 150,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 20),
@@ -105,6 +110,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 150,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 20),

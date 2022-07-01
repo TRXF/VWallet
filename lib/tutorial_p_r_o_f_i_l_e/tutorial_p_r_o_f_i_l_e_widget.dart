@@ -21,6 +21,7 @@ class _TutorialPROFILEWidgetState extends State<TutorialPROFILEWidget>
     'imageOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         scale: 0.6,
@@ -119,7 +120,7 @@ class _TutorialPROFILEWidgetState extends State<TutorialPROFILEWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 20),
                                         child: Image.asset(
-                                          'assets/images/fin_onboarding_1@2x.png',
+                                          'assets/images/_12.png',
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -189,7 +190,7 @@ class _TutorialPROFILEWidgetState extends State<TutorialPROFILEWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 20),
                                         child: Image.asset(
-                                          'assets/images/fin_onboarding_2@2x.png',
+                                          'assets/images/_18.png',
                                           width: 300,
                                           height: 300,
                                           fit: BoxFit.fitHeight,
@@ -256,7 +257,7 @@ class _TutorialPROFILEWidgetState extends State<TutorialPROFILEWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 30, 0, 30),
                                         child: Image.asset(
-                                          'assets/images/fin_onboarding_3@2x.png',
+                                          'assets/images/_5.png',
                                           width: 300,
                                           height: 250,
                                           fit: BoxFit.fitWidth,

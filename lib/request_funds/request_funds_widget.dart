@@ -68,7 +68,7 @@ class _RequestFundsWidgetState extends State<RequestFundsWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Request Funds',
+                          'Request Loan',
                           style: FlutterFlowTheme.of(context).title1,
                         ),
                         Card(
@@ -139,7 +139,7 @@ class _RequestFundsWidgetState extends State<RequestFundsWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                       child: FlutterFlowDropDown(
                         options: [
-                          'Office Budget',
+                          'Request Loan',
                           'External Transfer',
                           'ACH Payment'
                         ],

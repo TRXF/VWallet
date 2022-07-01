@@ -21,6 +21,7 @@ class _MYBudgetsWidgetState extends State<MYBudgetsWidget>
     'containerOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 200,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 49),
@@ -35,6 +36,7 @@ class _MYBudgetsWidgetState extends State<MYBudgetsWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 200,
       delay: 50,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 51),
@@ -49,6 +51,7 @@ class _MYBudgetsWidgetState extends State<MYBudgetsWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 150,
       delay: 90,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 26),
@@ -108,17 +111,8 @@ class _MYBudgetsWidgetState extends State<MYBudgetsWidget>
           ),
           backgroundColor: FlutterFlowTheme.of(context).background,
           floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              context.pushNamed(
-                'createBudget',
-                extra: <String, dynamic>{
-                  kTransitionInfoKey: TransitionInfo(
-                    hasTransition: true,
-                    transitionType: PageTransitionType.bottomToTop,
-                    duration: Duration(milliseconds: 220),
-                  ),
-                },
-              );
+            onPressed: () {
+              print('FloatingActionButton pressed ...');
             },
             backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
             elevation: 8,

@@ -69,24 +69,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : LoginPageWidget(),
+          appStateNotifier.loggedIn ? MYCardWidget() : LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : LoginPageWidget(),
+              appStateNotifier.loggedIn ? MYCardWidget() : LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'loginPage',
               path: 'loginPage',
               builder: (context, params) => LoginPageWidget(),
-            ),
-            FFRoute(
-              name: 'LoadingScreen',
-              path: 'loadingScreen',
-              requireAuth: true,
-              builder: (context, params) => LoadingScreenWidget(),
             ),
             FFRoute(
               name: 'registerAccount',
@@ -111,56 +105,75 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => OnboardingWidget(),
             ),
             FFRoute(
-              name: 'createBudgetBegin',
-              path: 'createBudgetBegin',
+              name: 'VAGAWalletCreated',
+              path: 'vAGAWalletCreated',
               requireAuth: true,
-              builder: (context, params) => CreateBudgetBeginWidget(),
+              builder: (context, params) => VAGAWalletCreatedWidget(),
+            ),
+            FFRoute(
+              name: 'CreateXRPLWallet',
+              path: 'createXRPLWallet',
+              requireAuth: true,
+              builder: (context, params) => CreateXRPLWalletWidget(
+                budgetList: params.getParam(
+                    'budgetList', ParamType.DocumentReference, 'budgets'),
+              ),
+            ),
+            FFRoute(
+              name: 'XRPLWalletCreated',
+              path: 'xRPLWalletCreated',
+              requireAuth: true,
+              builder: (context, params) => XRPLWalletCreatedWidget(),
+            ),
+            FFRoute(
+              name: 'CreateBSCWallet',
+              path: 'createBSCWallet',
+              requireAuth: true,
+              builder: (context, params) => CreateBSCWalletWidget(
+                budgetList: params.getParam(
+                    'budgetList', ParamType.DocumentReference, 'budgets'),
+              ),
+            ),
+            FFRoute(
+              name: 'BSCWalletCreated',
+              path: 'bSCWalletCreated',
+              requireAuth: true,
+              builder: (context, params) => BSCWalletCreatedWidget(),
             ),
             FFRoute(
               name: 'MY_Card',
-              path: 'mYCard',
+              path: 'home',
               requireAuth: true,
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'MY_Card')
-                  : MYCardWidget(),
+              builder: (context, params) => MYCardWidget(),
             ),
             FFRoute(
               name: 'MY_Budgets',
               path: 'mYBudgets',
               requireAuth: true,
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'MY_Budgets')
-                  : MYBudgetsWidget(),
+              builder: (context, params) => MYBudgetsWidget(),
             ),
             FFRoute(
               name: 'MY_profilePage',
               path: 'mYProfilePage',
               requireAuth: true,
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'MY_profilePage')
-                  : MYProfilePageWidget(
-                      userProfile: params.getParam(
-                          'userProfile', ParamType.DocumentReference, 'users'),
-                    ),
+              builder: (context, params) => MYProfilePageWidget(
+                userProfile: params.getParam(
+                    'userProfile', ParamType.DocumentReference, 'users'),
+              ),
             ),
             FFRoute(
               name: 'paymentDetails',
               path: 'paymentDetails',
               requireAuth: true,
               builder: (context, params) => PaymentDetailsWidget(
-                transactionDetails: params.getParam('transactionDetails',
-                    ParamType.DocumentReference, 'transactions'),
-                userSpent: params.getParam(
-                    'userSpent', ParamType.DocumentReference, 'users'),
-              ),
-            ),
-            FFRoute(
-              name: 'budgetDetails',
-              path: 'budgetDetails',
-              requireAuth: true,
-              builder: (context, params) => BudgetDetailsWidget(
-                budgetDetails: params.getParam(
-                    'budgetDetails', ParamType.DocumentReference, 'budgets'),
+                accountName: params.getParam(
+                    'accountName', ParamType.DocumentReference, 'users'),
+                from: params.getParam('from', ParamType.String),
+                to: params.getParam('to', ParamType.String),
+                amount: params.getParam('amount', ParamType.String),
+                hash: params.getParam('hash', ParamType.String),
+                timestamp: params.getParam('timestamp', ParamType.String),
+                txhash: params.getParam('txhash', ParamType.String),
               ),
             ),
             FFRoute(
@@ -182,45 +195,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => TransferCompleteWidget(),
             ),
             FFRoute(
-              name: 'requestFunds',
-              path: 'requestFunds',
+              name: 'budgetDetails',
+              path: 'budgetDetails',
               requireAuth: true,
-              builder: (context, params) => RequestFundsWidget(),
-            ),
-            FFRoute(
-              name: 'createBudget',
-              path: 'createBudget',
-              requireAuth: true,
-              builder: (context, params) => CreateBudgetWidget(),
-            ),
-            FFRoute(
-              name: 'transaction_ADD',
-              path: 'transactionADD',
-              requireAuth: true,
-              builder: (context, params) => TransactionADDWidget(),
-            ),
-            FFRoute(
-              name: 'transaction_EDIT',
-              path: 'transactionEDIT',
-              requireAuth: true,
-              builder: (context, params) => TransactionEDITWidget(
-                transactionDetails: params.getParam('transactionDetails',
-                    ParamType.DocumentReference, 'transactions'),
-              ),
-            ),
-            FFRoute(
-              name: 'changePassword',
-              path: 'changePassword',
-              requireAuth: true,
-              builder: (context, params) => ChangePasswordWidget(),
-            ),
-            FFRoute(
-              name: 'editProfile',
-              path: 'editProfile',
-              requireAuth: true,
-              builder: (context, params) => EditProfileWidget(
-                userProfile: params.getParam(
-                    'userProfile', ParamType.DocumentReference, 'users'),
+              builder: (context, params) => BudgetDetailsWidget(
+                budgetDetails: params.getParam(
+                    'budgetDetails', ParamType.DocumentReference, 'budgets'),
               ),
             ),
             FFRoute(
@@ -236,37 +216,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => PrivacyPolicyWidget(),
             ),
             FFRoute(
+              name: 'editProfile',
+              path: 'editProfile',
+              requireAuth: true,
+              builder: (context, params) => EditProfileWidget(
+                userProfile: params.getParam(
+                    'userProfile', ParamType.DocumentReference, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'requestFunds',
+              path: 'requestFunds',
+              requireAuth: true,
+              builder: (context, params) => RequestFundsWidget(),
+            ),
+            FFRoute(
+              name: 'changePassword',
+              path: 'changePassword',
+              requireAuth: true,
+              builder: (context, params) => ChangePasswordWidget(),
+            ),
+            FFRoute(
               name: 'tutorial_PROFILE',
               path: 'tutorialPROFILE',
               requireAuth: true,
               builder: (context, params) => TutorialPROFILEWidget(),
-            ),
-            FFRoute(
-              name: 'homePage',
-              path: 'homePage',
-              requireAuth: true,
-              builder: (context, params) => HomePageWidget(),
-            ),
-            FFRoute(
-              name: 'homePage_alt',
-              path: 'homePageAlt',
-              requireAuth: true,
-              builder: (context, params) => HomePageAltWidget(),
-            ),
-            FFRoute(
-              name: 'homePage_alt_1',
-              path: 'homePageAlt1',
-              requireAuth: true,
-              builder: (context, params) => HomePageAlt1Widget(),
-            ),
-            FFRoute(
-              name: 'budget_DELETE',
-              path: 'budgetDELETE',
-              requireAuth: true,
-              builder: (context, params) => BudgetDELETEWidget(
-                budgetList: params.getParam(
-                    'budgetList', ParamType.DocumentReference, 'budgets'),
-              ),
             ),
             FFRoute(
               name: 'Wallet',
@@ -275,24 +249,87 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => WalletWidget(),
             ),
             FFRoute(
-              name: 'VerifyTx',
-              path: 'verifyTx',
+              name: 'NFTGallery',
+              path: 'nFTGallery',
               requireAuth: true,
-              builder: (context, params) => VerifyTxWidget(),
+              builder: (context, params) => NFTGalleryWidget(),
             ),
             FFRoute(
               name: 'WalletDetails',
               path: 'walletDetails',
               requireAuth: true,
-              builder: (context, params) => WalletDetailsWidget(),
+              builder: (context, params) => WalletDetailsWidget(
+                address: params.getParam('address', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'TransactionApproval',
+              path: 'processQR/:type',
+              requireAuth: true,
+              builder: (context, params) => TransactionApprovalWidget(
+                type: params.getParam('type', ParamType.String),
+                uuid: params.getParam('uuid', ParamType.String),
+              ),
             ),
             FFRoute(
               name: 'ProcessQR',
-              path: 'processQR/:type/:uuid',
-              requireAuth: true,
+              path: 'ProcessQR',
               builder: (context, params) => ProcessQRWidget(
                 type: params.getParam('type', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'Cooldown',
+              path: 'cooldown',
+              requireAuth: true,
+              builder: (context, params) => CooldownWidget(),
+            ),
+            FFRoute(
+              name: 'Cheater',
+              path: 'cheater',
+              requireAuth: true,
+              builder: (context, params) => CheaterWidget(),
+            ),
+            FFRoute(
+              name: 'WalletsCards',
+              path: 'test1',
+              requireAuth: true,
+              builder: (context, params) => WalletsCardsWidget(),
+            ),
+            FFRoute(
+              name: 'SwapTokens',
+              path: 'swapTokens',
+              builder: (context, params) => SwapTokensWidget(),
+            ),
+            FFRoute(
+              name: 'RewardsList',
+              path: 'rewardsList',
+              requireAuth: true,
+              builder: (context, params) => RewardsListWidget(),
+            ),
+            FFRoute(
+              name: 'ActivateAccount',
+              path: 'activateAccount',
+              requireAuth: true,
+              builder: (context, params) => ActivateAccountWidget(),
+            ),
+            FFRoute(
+              name: 'BSCTransactionApproval',
+              path: 'bscprocessQR/:type',
+              requireAuth: true,
+              builder: (context, params) => BSCTransactionApprovalWidget(
+                type: params.getParam('type', ParamType.String),
                 uuid: params.getParam('uuid', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'BSCProcessQR',
+              path: 'bscProcessQR',
+              builder: (context, params) => BSCProcessQRWidget(
+                type: params.getParam('type', ParamType.String),
+                gas: params.getParam('gas', ParamType.String),
+                hash: params.getParam('hash', ParamType.String),
+                owner: params.getParam('owner', ParamType.String),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

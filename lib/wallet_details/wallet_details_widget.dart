@@ -8,7 +8,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WalletDetailsWidget extends StatefulWidget {
-  const WalletDetailsWidget({Key key}) : super(key: key);
+  const WalletDetailsWidget({
+    Key key,
+    this.address,
+  }) : super(key: key);
+
+  final String address;
 
   @override
   _WalletDetailsWidgetState createState() => _WalletDetailsWidgetState();
@@ -45,7 +50,7 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                context.pushNamed('MY_Card');
+                context.pop();
               },
               child: Icon(
                 Icons.chevron_left_rounded,
@@ -128,25 +133,64 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
                               ],
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 10, 0, 0),
-                                child: Text(
-                                  UserCall.vagawallet(
-                                    (walletDetailsUserResponse?.jsonBody ?? ''),
-                                  ).toString(),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Lexend Deca',
-                                        fontSize: 10,
-                                      ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 0, 8),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.92,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .background,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 0, 0, 0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  widget.address,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .subtitle1
+                                                      .override(
+                                                        fontFamily:
+                                                            'Lexend Deca',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .textColor,
+                                                        fontSize: 11,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           Padding(
                             padding:
@@ -171,68 +215,122 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
                               ],
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                child: Padding(
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 10, 20, 0),
-                                  child: FutureBuilder<ApiCallResponse>(
-                                    future: UnlockCall.call(
-                                      uid: currentUserUid,
-                                      password: '1',
+                                      0, 0, 0, 8),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.92,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .background,
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 40,
-                                            height: 40,
-                                            child: SpinKitRipple(
-                                              color: Color(0xFFDA0004),
-                                              size: 40,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 0, 0, 0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 10, 0, 0),
+                                                    child: FutureBuilder<
+                                                        ApiCallResponse>(
+                                                      future: UnlockCall.call(
+                                                        uid: currentUserUid,
+                                                        password: '1',
+                                                      ),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        // Customize what your widget looks like when it's loading.
+                                                        if (!snapshot.hasData) {
+                                                          return Center(
+                                                            child: SizedBox(
+                                                              width: 40,
+                                                              height: 40,
+                                                              child:
+                                                                  SpinKitRipple(
+                                                                color: Color(
+                                                                    0xFFDA0004),
+                                                                size: 40,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                        final textUnlockResponse =
+                                                            snapshot.data;
+                                                        return InkWell(
+                                                          onTap: () async {
+                                                            await actions.copy(
+                                                              getJsonField(
+                                                                (textUnlockResponse
+                                                                        ?.jsonBody ??
+                                                                    ''),
+                                                                r'''$.data''',
+                                                              ).toString(),
+                                                            );
+                                                          },
+                                                          child: Text(
+                                                            getJsonField(
+                                                              (textUnlockResponse
+                                                                      ?.jsonBody ??
+                                                                  ''),
+                                                              r'''$.data''',
+                                                            ).toString(),
+                                                            maxLines: 7,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyText1
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Lexend Deca',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .textColor,
+                                                                  fontSize: 12,
+                                                                  lineHeight:
+                                                                      1.5,
+                                                                ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        );
-                                      }
-                                      final textUnlockResponse = snapshot.data;
-                                      return InkWell(
-                                        onTap: () async {
-                                          await actions.copy(
-                                            getJsonField(
-                                              (textUnlockResponse?.jsonBody ??
-                                                  ''),
-                                              r'''$.data''',
-                                            ).toString(),
-                                          );
-                                        },
-                                        child: Text(
-                                          getJsonField(
-                                            (textUnlockResponse?.jsonBody ??
-                                                ''),
-                                            r'''$.data''',
-                                          ).toString(),
-                                          maxLines: 5,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Lexend Deca',
-                                                fontSize: 12,
-                                                lineHeight: 1.5,
-                                              ),
                                         ),
-                                      );
-                                    },
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 60, 0, 0),
+                                EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -256,20 +354,105 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 10, 20, 0),
-                                  child: Text(
-                                    FFAppState().privatekey,
-                                    maxLines: 2,
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          fontSize: 12,
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 10, 20, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 8),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.92,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .background,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
-                                  ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(12, 0, 0, 0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(0, 10,
+                                                                    0, 0),
+                                                        child: FutureBuilder<
+                                                            ApiCallResponse>(
+                                                          future:
+                                                              UnlockCall.call(
+                                                            uid: currentUserUid,
+                                                            password:
+                                                                FFAppState()
+                                                                    .password,
+                                                          ),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return Center(
+                                                                child: SizedBox(
+                                                                  width: 40,
+                                                                  height: 40,
+                                                                  child:
+                                                                      SpinKitRipple(
+                                                                    color: Color(
+                                                                        0xFFDA0004),
+                                                                    size: 40,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                            final textUnlockResponse =
+                                                                snapshot.data;
+                                                            return Text(
+                                                              'Not available at the moment',
+                                                              maxLines: 2,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyText1
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Lexend Deca',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .textColor,
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -279,15 +462,12 @@ class _WalletDetailsWidgetState extends State<WalletDetailsWidget> {
                     ],
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.75, 0),
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
-                      child: Image.asset(
-                        'assets/images/Book3.png',
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        fit: BoxFit.cover,
-                      ),
+                    alignment: AlignmentDirectional(0.8, 0),
+                    child: Image.asset(
+                      'assets/images/Book3.png',
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ],

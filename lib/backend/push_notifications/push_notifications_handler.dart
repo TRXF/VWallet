@@ -79,53 +79,73 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
 
 final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
   'loginPage': (data) async => LoginPageWidget(),
-  'LoadingScreen': (data) async => LoadingScreenWidget(),
   'registerAccount': (data) async => RegisterAccountWidget(),
   'forgotPassword': (data) async => ForgotPasswordWidget(),
   'completeProfile': (data) async => CompleteProfileWidget(),
   'onboarding': (data) async => OnboardingWidget(),
-  'createBudgetBegin': (data) async => CreateBudgetBeginWidget(),
-  'MY_Budgets': (data) async => NavBarPage(initialPage: 'MY_Budgets'),
-  'MY_profilePage': (data) async => hasMatchingParameters(data, {'userProfile'})
-      ? MYProfilePageWidget(
-          userProfile: getParameter(data, 'userProfile'),
-        )
-      : NavBarPage(initialPage: 'MY_profilePage'),
-  'paymentDetails': (data) async => PaymentDetailsWidget(
-        transactionDetails: getParameter(data, 'transactionDetails'),
-        userSpent: getParameter(data, 'userSpent'),
+  'VAGAWalletCreated': (data) async => VAGAWalletCreatedWidget(),
+  'CreateXRPLWallet': (data) async => CreateXRPLWalletWidget(
+        budgetList: getParameter(data, 'budgetList'),
       ),
-  'budgetDetails': (data) async => BudgetDetailsWidget(
-        budgetDetails: getParameter(data, 'budgetDetails'),
+  'XRPLWalletCreated': (data) async => XRPLWalletCreatedWidget(),
+  'CreateBSCWallet': (data) async => CreateBSCWalletWidget(
+        budgetList: getParameter(data, 'budgetList'),
+      ),
+  'BSCWalletCreated': (data) async => BSCWalletCreatedWidget(),
+  'MY_Budgets': (data) async => MYBudgetsWidget(),
+  'MY_profilePage': (data) async => MYProfilePageWidget(
+        userProfile: getParameter(data, 'userProfile'),
+      ),
+  'paymentDetails': (data) async => PaymentDetailsWidget(
+        accountName: getParameter(data, 'accountName'),
+        from: getParameter(data, 'from'),
+        to: getParameter(data, 'to'),
+        amount: getParameter(data, 'amount'),
+        hash: getParameter(data, 'hash'),
+        timestamp: getParameter(data, 'timestamp'),
+        txhash: getParameter(data, 'txhash'),
       ),
   'transferFunds': (data) async => TransferFundsWidget(),
   'transferFundsVerify': (data) async => TransferFundsVerifyWidget(),
   'transferComplete': (data) async => TransferCompleteWidget(),
-  'requestFunds': (data) async => RequestFundsWidget(),
-  'createBudget': (data) async => CreateBudgetWidget(),
-  'transaction_ADD': (data) async => TransactionADDWidget(),
-  'transaction_EDIT': (data) async => TransactionEDITWidget(
-        transactionDetails: getParameter(data, 'transactionDetails'),
-      ),
-  'changePassword': (data) async => ChangePasswordWidget(),
-  'editProfile': (data) async => EditProfileWidget(
-        userProfile: getParameter(data, 'userProfile'),
+  'budgetDetails': (data) async => BudgetDetailsWidget(
+        budgetDetails: getParameter(data, 'budgetDetails'),
       ),
   'notificationsSettings': (data) async => NotificationsSettingsWidget(),
   'privacyPolicy': (data) async => PrivacyPolicyWidget(),
-  'tutorial_PROFILE': (data) async => TutorialPROFILEWidget(),
-  'homePage': (data) async => HomePageWidget(),
-  'homePage_alt': (data) async => HomePageAltWidget(),
-  'homePage_alt_1': (data) async => HomePageAlt1Widget(),
-  'budget_DELETE': (data) async => BudgetDELETEWidget(
-        budgetList: getParameter(data, 'budgetList'),
+  'editProfile': (data) async => EditProfileWidget(
+        userProfile: getParameter(data, 'userProfile'),
       ),
+  'requestFunds': (data) async => RequestFundsWidget(),
+  'changePassword': (data) async => ChangePasswordWidget(),
+  'tutorial_PROFILE': (data) async => TutorialPROFILEWidget(),
   'Wallet': (data) async => WalletWidget(),
-  'VerifyTx': (data) async => VerifyTxWidget(),
-  'WalletDetails': (data) async => WalletDetailsWidget(),
-  'ProcessQR': (data) async => ProcessQRWidget(
+  'NFTGallery': (data) async => NFTGalleryWidget(),
+  'WalletDetails': (data) async => WalletDetailsWidget(
+        address: getParameter(data, 'address'),
+      ),
+  'TransactionApproval': (data) async => TransactionApprovalWidget(
         type: getParameter(data, 'type'),
         uuid: getParameter(data, 'uuid'),
+      ),
+  'ProcessQR': (data) async => ProcessQRWidget(
+        type: getParameter(data, 'type'),
+      ),
+  'Cooldown': (data) async => CooldownWidget(),
+  'Cheater': (data) async => CheaterWidget(),
+  'WalletsCards': (data) async => WalletsCardsWidget(),
+  'SwapTokens': (data) async => SwapTokensWidget(),
+  'RewardsList': (data) async => RewardsListWidget(),
+  'ActivateAccount': (data) async => ActivateAccountWidget(),
+  'BSCTransactionApproval': (data) async => BSCTransactionApprovalWidget(
+        type: getParameter(data, 'type'),
+        uuid: getParameter(data, 'uuid'),
+      ),
+  'BSCProcessQR': (data) async => BSCProcessQRWidget(
+        type: getParameter(data, 'type'),
+        gas: getParameter(data, 'gas'),
+        hash: getParameter(data, 'hash'),
+        owner: getParameter(data, 'owner'),
       ),
 };
 

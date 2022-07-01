@@ -49,5 +49,19 @@ service cloud.firestore {
       allow write: if false;
       allow delete: if false;
     }
+
+    match /users/{parent}/snapshot/{document} {
+      allow create: if request.auth.uid == parent;
+      allow read: if true;
+      allow write: if request.auth.uid == parent;
+      allow delete: if false;
+    }
+
+    match /users/{parent}/vwallet/{document} {
+      allow create: if request.auth.uid == parent;
+      allow read: if true;
+      allow write: if request.auth.uid == parent;
+      allow delete: if false;
+    }
   }
 }

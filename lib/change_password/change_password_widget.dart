@@ -52,7 +52,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
           image: DecorationImage(
             fit: BoxFit.fitWidth,
             image: Image.asset(
-              'assets/images/login_bg@2x.png',
+              'assets/images/Screenshot_2022-06-21_at_15.46_2.png',
             ).image,
           ),
         ),

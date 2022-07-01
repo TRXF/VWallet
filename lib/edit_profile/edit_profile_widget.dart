@@ -86,7 +86,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
                 image: Image.asset(
-                  'assets/images/login_bg@2x.png',
+                  'assets/images/Screenshot_2022-06-21_at_15.46_.png',
                 ).image,
               ),
             ),

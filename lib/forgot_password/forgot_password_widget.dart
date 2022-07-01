@@ -53,7 +53,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 1,
         decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).background,
+          color: Color(0xFF15181B),
           image: DecorationImage(
             fit: BoxFit.fitWidth,
             image: Image.asset(
@@ -70,9 +70,12 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    child: Text(
-                      'Enter the email associated with your account and we will send you a verification code.',
-                      style: FlutterFlowTheme.of(context).bodyText1,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 20),
+                      child: Text(
+                        'Enter the email associated with your account and we will send you a verification code.',
+                        style: FlutterFlowTheme.of(context).bodyText1,
+                      ),
                     ),
                   ),
                 ],

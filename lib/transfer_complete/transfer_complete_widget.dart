@@ -19,7 +19,7 @@ class _TransferCompleteWidgetState extends State<TransferCompleteWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
+      backgroundColor: FlutterFlowTheme.of(context).primaryColor,
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -56,7 +56,7 @@ class _TransferCompleteWidgetState extends State<TransferCompleteWidget> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Great work, you successfully transferred funds. It may take a few days for the funds to leave your account.',
+                      FFAppState().txresult,
                       textAlign: TextAlign.center,
                       style: FlutterFlowTheme.of(context).bodyText2.override(
                             fontFamily: 'Lexend Deca',
@@ -68,7 +68,7 @@ class _TransferCompleteWidgetState extends State<TransferCompleteWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 70),
+              padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 70),
               child: FFButtonWidget(
                 onPressed: () async {
                   context.pushNamed(
@@ -82,7 +82,7 @@ class _TransferCompleteWidgetState extends State<TransferCompleteWidget> {
                     },
                   );
                 },
-                text: 'Okay',
+                text: 'Close',
                 options: FFButtonOptions(
                   width: 130,
                   height: 50,

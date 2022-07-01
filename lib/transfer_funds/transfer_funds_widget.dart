@@ -26,6 +26,7 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
     'rowOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 30),
@@ -42,6 +43,7 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 170,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 80),
@@ -56,6 +58,7 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 170,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 80),
@@ -70,6 +73,7 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: -220,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, -0.0),
@@ -86,6 +90,7 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: -220,
+      hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
         scale: 0.4,
@@ -251,59 +256,55 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          20, 4, 20, 0),
+                                          20, 4, 20, 20),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          FutureBuilder<ApiCallResponse>(
-                                            future: BalanceCall.call(
-                                              uid: currentUserUid,
-                                            ),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 40,
-                                                    height: 40,
-                                                    child: SpinKitRipple(
-                                                      color: Color(0xFFDA0004),
-                                                      size: 40,
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 0, 0, 10),
+                                            child:
+                                                FutureBuilder<ApiCallResponse>(
+                                              future: BalanceCall.call(
+                                                uid: currentUserUid,
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 40,
+                                                      height: 40,
+                                                      child: SpinKitRipple(
+                                                        color:
+                                                            Color(0xFFDA0004),
+                                                        size: 40,
+                                                      ),
                                                     ),
-                                                  ),
+                                                  );
+                                                }
+                                                final textBalanceResponse =
+                                                    snapshot.data;
+                                                return Text(
+                                                  BalanceCall.vaga(
+                                                    (textBalanceResponse
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ).toString(),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .title1
+                                                      .override(
+                                                        fontFamily:
+                                                            'Lexend Deca',
+                                                        fontSize: 32,
+                                                      ),
                                                 );
-                                              }
-                                              final textBalanceResponse =
-                                                  snapshot.data;
-                                              return Text(
-                                                getJsonField(
-                                                  (textBalanceResponse
-                                                          ?.jsonBody ??
-                                                      ''),
-                                                  r'''$.data''',
-                                                ).toString(),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .title1
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          fontSize: 32,
-                                                        ),
-                                              );
-                                            },
+                                              },
+                                            ),
                                           ),
                                         ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          20, 4, 20, 12),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [],
                                       ),
                                     ),
                                   ],
@@ -425,13 +426,6 @@ class _TransferFundsWidgetState extends State<TransferFundsWidget>
                             style: FlutterFlowTheme.of(context).title1,
                           ).animated(
                               [animationsMap['textFieldOnPageLoadAnimation2']]),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                          child: Text(
-                            textController1.text,
-                            style: FlutterFlowTheme.of(context).bodyText1,
-                          ),
                         ),
                       ],
                     ),

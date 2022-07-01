@@ -44,6 +44,18 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   String get userTitle;
 
   @nullable
+  @BuiltValueField(wireName: 'vaga_wallet')
+  String get vagaWallet;
+
+  @nullable
+  @BuiltValueField(wireName: 'bsc_wallet')
+  String get bscWallet;
+
+  @nullable
+  @BuiltValueField(wireName: 'xrpl_wallet')
+  String get xrplWallet;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -55,7 +67,10 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..age = 0
     ..phoneNumber = ''
     ..photoUrl = ''
-    ..userTitle = '';
+    ..userTitle = ''
+    ..vagaWallet = ''
+    ..bscWallet = ''
+    ..xrplWallet = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -89,6 +104,9 @@ Map<String, dynamic> createUsersRecordData({
   String photoUrl,
   DateTime createdTime,
   String userTitle,
+  String vagaWallet,
+  String bscWallet,
+  String xrplWallet,
 }) =>
     serializers.toFirestore(
         UsersRecord.serializer,
@@ -102,4 +120,7 @@ Map<String, dynamic> createUsersRecordData({
           ..phoneNumber = phoneNumber
           ..photoUrl = photoUrl
           ..createdTime = createdTime
-          ..userTitle = userTitle));
+          ..userTitle = userTitle
+          ..vagaWallet = vagaWallet
+          ..bscWallet = bscWallet
+          ..xrplWallet = xrplWallet));
