@@ -333,7 +333,7 @@ class _EditBookingWidgetState extends State<EditBookingWidget> {
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 8,
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     FFButtonWidget(
@@ -366,7 +366,7 @@ class _EditBookingWidgetState extends State<EditBookingWidget> {
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 8,
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ],

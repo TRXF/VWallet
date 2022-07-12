@@ -52,7 +52,7 @@ class _BSCTransactionApprovalWidgetState
     super.initState();
     // On page load action.
     SchedulerBinding.instance?.addPostFrameCallback((_) async {
-      if (!((widget.type != null) && (widget.type != ''))) {
+      if (!((widget.type != null && widget.type != ''))) {
         context.pushNamed('MY_Card');
       }
     });
@@ -349,10 +349,19 @@ class _BSCTransactionApprovalWidgetState
                                 ) !=
                                 null)) {
                               await ApproveWssCall.call(
-                                uuid: widget.uuid,
+                                uuid: getJsonField(
+                                  (bSCTransactionApprovalConvertHexResponse
+                                          ?.jsonBody ??
+                                      ''),
+                                  r'''$.data.uuid''',
+                                ).toString(),
                                 txhash: getJsonField(
                                   (approved?.jsonBody ?? ''),
-                                  r'''$.data''',
+                                  r'''$.data.deployTransaction.hash''',
+                                ).toString(),
+                                address: getJsonField(
+                                  (approved?.jsonBody ?? ''),
+                                  r'''$.data.address''',
                                 ).toString(),
                               );
                               context.pushNamed(
@@ -374,6 +383,12 @@ class _BSCTransactionApprovalWidgetState
                                       getJsonField(
                                         (approved?.jsonBody ?? ''),
                                         r'''$.data.signer.address''',
+                                      ).toString(),
+                                      ParamType.String),
+                                  'address': serializeParam(
+                                      getJsonField(
+                                        (approved?.jsonBody ?? ''),
+                                        r'''$.data.address''',
                                       ).toString(),
                                       ParamType.String),
                                 }.withoutNulls,
@@ -401,7 +416,7 @@ class _BSCTransactionApprovalWidgetState
                               color: Colors.transparent,
                               width: 1,
                             ),
-                            borderRadius: 12,
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),

@@ -170,7 +170,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
                         color: Colors.transparent,
                         width: 1,
                       ),
-                      borderRadius: 30,
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ),

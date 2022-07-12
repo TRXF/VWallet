@@ -128,7 +128,7 @@ class _BSCDetailCardWidgetState extends State<BSCDetailCardWidget> {
                               ),
                               onPressed: () async {
                                 await actions.copy(
-                                  FFAppState().bscPrivateKey,
+                                  columnUsersRecord.bscWallet,
                                 );
                               },
                             ),
@@ -190,7 +190,7 @@ class _BSCDetailCardWidgetState extends State<BSCDetailCardWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,

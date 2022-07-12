@@ -53,7 +53,7 @@ class _TransactionApprovalWidgetState extends State<TransactionApprovalWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance?.addPostFrameCallback((_) async {
-      if ((widget.type != null) && (widget.type != '')) {
+      if ((widget.type != null && widget.type != '')) {
         balance = await BalanceCall.call(
           uid: currentUserUid,
         );
@@ -480,7 +480,7 @@ class _TransactionApprovalWidgetState extends State<TransactionApprovalWidget>
                               color: Colors.transparent,
                               width: 1,
                             ),
-                            borderRadius: 12,
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),

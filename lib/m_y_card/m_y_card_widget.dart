@@ -7,7 +7,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'dart:ui';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -28,6 +27,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
   ApiCallResponse pong;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var qrhex = '';
+  ApiCallResponse reloadBalance;
   ApiCallResponse vagaBalance;
   final animationsMap = {
     'rowOnPageLoadAnimation': AnimationInfo(
@@ -252,7 +252,7 @@ class _MYCardWidgetState extends State<MYCardWidget>
                 tabletLandscape: false,
                 desktop: false,
               ))
-                CustomRefreshIndicator(
+                RefreshIndicator(
                   onRefresh: () async {
                     vagaBalance = await BalanceCall.call(
                       uid: valueOrDefault<String>(
@@ -268,39 +268,37 @@ class _MYCardWidgetState extends State<MYCardWidget>
                               ).toString(),
                               '0',
                             ));
+                    setState(
+                        () => FFAppState().balancevgb = valueOrDefault<String>(
+                              BalanceCall.xrpl(
+                                (balance?.jsonBody ?? ''),
+                              ).toString(),
+                              '0',
+                            ));
+                    setState(
+                        () => FFAppState().balancevgo = valueOrDefault<String>(
+                              BalanceCall.bsc(
+                                (balance?.jsonBody ?? ''),
+                              ).toString(),
+                              '0',
+                            ));
+                    setState(
+                        () => FFAppState().balancebnb = valueOrDefault<String>(
+                              BalanceCall.bnb(
+                                (balance?.jsonBody ?? ''),
+                              ).toString(),
+                              '0',
+                            ));
+                    setState(
+                        () => FFAppState().balancexrp = valueOrDefault<String>(
+                              BalanceCall.xrp(
+                                (balance?.jsonBody ?? ''),
+                              ).toString(),
+                              '0',
+                            ));
                   },
-                  onStateChanged: (c) =>
-                      c.didChange(from: IndicatorState.loading)
-                          ? setState(() {})
-                          : null,
-                  builder: (context, child, controller) => Stack(
-                    children: [
-                      if (controller.isLoading)
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Container(
-                            height: 40,
-                            child: Center(
-                              child: SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: SpinKitRipple(
-                                  color: Color(0xFFDA0004),
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: controller.isLoading ? 40 : 0.0,
-                        ),
-                        child: child,
-                      ),
-                    ],
-                  ),
                   child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -732,427 +730,394 @@ class _MYCardWidgetState extends State<MYCardWidget>
                               topRight: Radius.circular(16),
                             ),
                           ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 16, 20, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Text(
-                                        'Quick Service',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1,
-                                      ),
-                                    ],
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              reloadBalance = await BalanceCall.call(
+                                uid: currentUserUid,
+                              );
+                              setState(() =>
+                                  FFAppState().balance = valueOrDefault<String>(
+                                    BalanceCall.vaga(
+                                      (balance?.jsonBody ?? ''),
+                                    ).toString(),
+                                    '0',
+                                  ));
+                            },
+                            child: SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        20, 16, 20, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          'Quick Service',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      16, 12, 16, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.44,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .background,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            context.pushNamed(
-                                              'transferFunds',
-                                              extra: <String, dynamic>{
-                                                kTransitionInfoKey:
-                                                    TransitionInfo(
-                                                  hasTransition: true,
-                                                  transitionType:
-                                                      PageTransitionType
-                                                          .bottomToTop,
-                                                  duration: Duration(
-                                                      milliseconds: 220),
-                                                ),
-                                              },
-                                            );
-                                          },
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.swap_horiz_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .textColor,
-                                                size: 40,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 8, 0, 0),
-                                                child: Text(
-                                                  'Transfer',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyText1,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Funds',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          fontSize: 10,
-                                                        ),
-                                              ),
-                                            ],
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        18, 12, 18, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.28,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .background,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                           ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.44,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .background,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            await showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .darkBackground,
-                                              context: context,
-                                              builder: (context) {
-                                                return Padding(
-                                                  padding:
-                                                      MediaQuery.of(context)
-                                                          .viewInsets,
-                                                  child: Container(
-                                                    height: 300,
-                                                    child: SwapCardWidget(),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              context.pushNamed(
+                                                'transferFunds',
+                                                extra: <String, dynamic>{
+                                                  kTransitionInfoKey:
+                                                      TransitionInfo(
+                                                    hasTransition: true,
+                                                    transitionType:
+                                                        PageTransitionType
+                                                            .bottomToTop,
+                                                    duration: Duration(
+                                                        milliseconds: 220),
                                                   ),
-                                                );
-                                              },
-                                            );
-                                          },
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.pizzaSlice,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .textColor,
-                                                size: 30,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 8, 0, 0),
-                                                child: Text(
-                                                  'Snap',
-                                                  style: FlutterFlowTheme.of(
+                                                },
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.swap_horiz_rounded,
+                                                  color: FlutterFlowTheme.of(
                                                           context)
-                                                      .bodyText1,
+                                                      .textColor,
+                                                  size: 40,
                                                 ),
-                                              ),
-                                              FutureBuilder<ApiCallResponse>(
-                                                future: RewardsBalanceCall.call(
-                                                  uid: currentUserUid,
-                                                ),
-                                                builder: (context, snapshot) {
-                                                  // Customize what your widget looks like when it's loading.
-                                                  if (!snapshot.hasData) {
-                                                    return Center(
-                                                      child: SizedBox(
-                                                        width: 40,
-                                                        height: 40,
-                                                        child: SpinKitRipple(
-                                                          color:
-                                                              Color(0xFFDA0004),
-                                                          size: 40,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                                  final textRewardsBalanceResponse =
-                                                      snapshot.data;
-                                                  return Text(
-                                                    valueOrDefault<String>(
-                                                      RewardsBalanceCall.data(
-                                                        (textRewardsBalanceResponse
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      ).toString(),
-                                                      '0',
-                                                    ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 8, 0, 0),
+                                                  child: Text(
+                                                    'Transfer',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryColor,
-                                                          fontSize: 10,
-                                                        ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 12, 20, 12),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Text(
-                                        'Transaction',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 24),
-                                  child: FutureBuilder<ApiCallResponse>(
-                                    future: TransactionsCall.call(
-                                      address: UserCall.vagawallet(
-                                        (mYCardUserResponse?.jsonBody ?? ''),
-                                      ).toString(),
-                                    ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 40,
-                                            height: 40,
-                                            child: SpinKitRipple(
-                                              color: Color(0xFFDA0004),
-                                              size: 40,
+                                                        .bodyText1,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        );
-                                      }
-                                      final transactionListTransactionsResponse =
-                                          snapshot.data;
-                                      return Builder(
-                                        builder: (context) {
-                                          final txs = (TransactionsCall.get(
-                                                    (transactionListTransactionsResponse
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )?.toList() ??
-                                                  [])
-                                              .take(15)
-                                              .toList();
-                                          return Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: List.generate(txs.length,
-                                                (txsIndex) {
-                                              final txsItem = txs[txsIndex];
-                                              return Visibility(
-                                                visible:
-                                                    (TransactionsCall.txhash(
-                                                          (transactionListTransactionsResponse
-                                                                  ?.jsonBody ??
-                                                              ''),
-                                                        ) !=
-                                                        null),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(0, 0, 0, 8),
-                                                  child: Container(
-                                                    width:
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.28,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .background,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .darkBackground,
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding:
                                                         MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.92,
-                                                    height: 70,
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .background,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                            .viewInsets,
+                                                    child: Container(
+                                                      height: 300,
+                                                      child: SwapCardWidget(),
                                                     ),
-                                                    child: InkWell(
-                                                      onTap: () async {
-                                                        context.pushNamed(
-                                                          'paymentDetails',
-                                                          queryParams: {
-                                                            'from': serializeParam(
-                                                                getJsonField(
-                                                                  txsItem,
-                                                                  r'''$.from''',
-                                                                ).toString(),
-                                                                ParamType.String),
-                                                            'to': serializeParam(
-                                                                getJsonField(
-                                                                  txsItem,
-                                                                  r'''$.to''',
-                                                                ).toString(),
-                                                                ParamType.String),
-                                                            'amount':
-                                                                serializeParam(
-                                                                    getJsonField(
-                                                                      txsItem,
-                                                                      r'''$.amount''',
-                                                                    )
-                                                                        .toString(),
-                                                                    ParamType
-                                                                        .String),
-                                                            'timestamp':
-                                                                serializeParam(
-                                                                    getJsonField(
-                                                                      txsItem,
-                                                                      r'''$.timestamp''',
-                                                                    )
-                                                                        .toString(),
-                                                                    ParamType
-                                                                        .String),
-                                                            'txhash':
-                                                                serializeParam(
-                                                                    getJsonField(
-                                                                      txsItem,
-                                                                      r'''$.txhash''',
-                                                                    )
-                                                                        .toString(),
-                                                                    ParamType
-                                                                        .String),
-                                                          }.withoutNulls,
-                                                        );
-                                                      },
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        8,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                            child: Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
-                                                              color: Color(
-                                                                  0xFFDA0004),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.flash_on_rounded,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .textColor,
+                                                  size: 40,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 8, 0, 0),
+                                                  child: Text(
+                                                    'Snap',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.28,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .background,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              context.pushNamed('NFTGallery');
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.image_outlined,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .textColor,
+                                                  size: 40,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 8, 0, 0),
+                                                  child: Text(
+                                                    'Assets',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        20, 12, 20, 12),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          'Transaction',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 24),
+                                    child: FutureBuilder<ApiCallResponse>(
+                                      future: TransactionsCall.call(
+                                        address: UserCall.vagawallet(
+                                          (mYCardUserResponse?.jsonBody ?? ''),
+                                        ).toString(),
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 40,
+                                              height: 40,
+                                              child: SpinKitRipple(
+                                                color: Color(0xFFDA0004),
+                                                size: 40,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        final transactionListTransactionsResponse =
+                                            snapshot.data;
+                                        return Builder(
+                                          builder: (context) {
+                                            final txs = (TransactionsCall.get(
+                                                      (transactionListTransactionsResponse
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    )?.toList() ??
+                                                    [])
+                                                .take(15)
+                                                .toList();
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: List.generate(
+                                                  txs.length, (txsIndex) {
+                                                final txsItem = txs[txsIndex];
+                                                return Visibility(
+                                                  visible:
+                                                      (TransactionsCall.txhash(
+                                                            (transactionListTransactionsResponse
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                          ) !=
+                                                          null),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 0, 8),
+                                                    child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.92,
+                                                      height: 70,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .background,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          context.pushNamed(
+                                                            'paymentDetails',
+                                                            queryParams: {
+                                                              'from': serializeParam(
+                                                                  getJsonField(
+                                                                    txsItem,
+                                                                    r'''$.from''',
+                                                                  ).toString(),
+                                                                  ParamType.String),
+                                                              'to': serializeParam(
+                                                                  getJsonField(
+                                                                    txsItem,
+                                                                    r'''$.to''',
+                                                                  ).toString(),
+                                                                  ParamType.String),
+                                                              'amount': serializeParam(
+                                                                  getJsonField(
+                                                                    txsItem,
+                                                                    r'''$.amount''',
+                                                                  ).toString(),
+                                                                  ParamType.String),
+                                                              'timestamp':
+                                                                  serializeParam(
+                                                                      getJsonField(
+                                                                        txsItem,
+                                                                        r'''$.timestamp''',
+                                                                      )
+                                                                          .toString(),
+                                                                      ParamType
+                                                                          .String),
+                                                              'txhash': serializeParam(
+                                                                  getJsonField(
+                                                                    txsItem,
+                                                                    r'''$.txhash''',
+                                                                  ).toString(),
+                                                                  ParamType.String),
+                                                            }.withoutNulls,
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          8,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              child: Card(
+                                                                clipBehavior: Clip
+                                                                    .antiAliasWithSaveLayer,
+                                                                color: Color(
+                                                                    0xFFDA0004),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              40),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          8,
+                                                                          8,
+                                                                          8,
+                                                                          8),
+                                                                  child: FaIcon(
+                                                                    FontAwesomeIcons
+                                                                        .pager,
+                                                                    color: Color(
+                                                                        0xFFE3E3E3),
+                                                                    size: 24,
+                                                                  ),
+                                                                ),
                                                               ),
+                                                            ),
+                                                            Expanded(
                                                               child: Padding(
                                                                 padding:
                                                                     EdgeInsetsDirectional
                                                                         .fromSTEB(
-                                                                            8,
-                                                                            8,
-                                                                            8,
-                                                                            8),
-                                                                child: FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .pager,
-                                                                  color: Color(
-                                                                      0xFFE3E3E3),
-                                                                  size: 24,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          12,
-                                                                          0,
-                                                                          0,
-                                                                          0),
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    getJsonField(
-                                                                      txsItem,
-                                                                      r'''$.from''',
-                                                                    )
-                                                                        .toString()
-                                                                        .maybeHandleOverflow(
-                                                                          maxChars:
-                                                                              28,
-                                                                          replacement:
-                                                                              '…',
-                                                                        ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .subtitle1
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Lexend Deca',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).textColor,
-                                                                          fontSize:
-                                                                              11,
-                                                                        ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                                            12,
                                                                             0,
-                                                                            4,
                                                                             0,
                                                                             0),
-                                                                    child: Text(
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
                                                                       getJsonField(
                                                                         txsItem,
-                                                                        r'''$.to''',
+                                                                        r'''$.from''',
                                                                       )
                                                                           .toString()
                                                                           .maybeHandleOverflow(
@@ -1163,97 +1128,126 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                                                           ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .bodyText1
+                                                                          .subtitle1
                                                                           .override(
                                                                             fontFamily:
                                                                                 'Lexend Deca',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).textColor,
                                                                             fontSize:
-                                                                                10,
+                                                                                11,
                                                                           ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              0,
+                                                                              4,
+                                                                              0,
+                                                                              0),
+                                                                      child:
+                                                                          Text(
+                                                                        getJsonField(
+                                                                          txsItem,
+                                                                          r'''$.to''',
+                                                                        )
+                                                                            .toString()
+                                                                            .maybeHandleOverflow(
+                                                                              maxChars: 28,
+                                                                              replacement: '…',
+                                                                            ),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyText1
+                                                                            .override(
+                                                                              fontFamily: 'Lexend Deca',
+                                                                              fontSize: 10,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          12,
+                                                                          0,
+                                                                          12,
+                                                                          0),
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      getJsonField(
+                                                                        txsItem,
+                                                                        r'''$.amount''',
+                                                                      ).toString(),
+                                                                      '0',
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .subtitle2
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Lexend Deca',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).tertiaryColor,
+                                                                          fontSize:
+                                                                              11,
+                                                                        ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0,
+                                                                            10,
+                                                                            0,
+                                                                            0),
+                                                                    child:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .longArrowAltRight,
+                                                                      color: Color(
+                                                                          0xFFE3E3E3),
+                                                                      size: 16,
                                                                     ),
                                                                   ),
                                                                 ],
                                                               ),
                                                             ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        12,
-                                                                        0,
-                                                                        12,
-                                                                        0),
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  valueOrDefault<
-                                                                      String>(
-                                                                    getJsonField(
-                                                                      txsItem,
-                                                                      r'''$.amount''',
-                                                                    ).toString(),
-                                                                    '0',
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .end,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle2
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Lexend Deca',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiaryColor,
-                                                                        fontSize:
-                                                                            11,
-                                                                      ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          10,
-                                                                          0,
-                                                                          0),
-                                                                  child: FaIcon(
-                                                                    FontAwesomeIcons
-                                                                        .longArrowAltRight,
-                                                                    color: Color(
-                                                                        0xFFE3E3E3),
-                                                                    size: 16,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            }),
-                                          ).animated([
-                                            animationsMap[
-                                                'columnOnPageLoadAnimation']
-                                          ]);
-                                        },
-                                      );
-                                    },
+                                                );
+                                              }),
+                                            ).animated([
+                                              animationsMap[
+                                                  'columnOnPageLoadAnimation']
+                                            ]);
+                                          },
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ).animated(

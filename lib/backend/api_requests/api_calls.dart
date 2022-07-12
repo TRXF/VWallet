@@ -44,6 +44,10 @@ class UserCall {
         response,
         r'''$.data.api''',
       );
+  static dynamic stripe(dynamic response) => getJsonField(
+        response,
+        r'''$.data.stripe_Id''',
+      );
 }
 
 class BalanceCall {
@@ -79,6 +83,14 @@ class BalanceCall {
   static dynamic xrpl(dynamic response) => getJsonField(
         response,
         r'''$.data.xrpl''',
+      );
+  static dynamic bnb(dynamic response) => getJsonField(
+        response,
+        r'''$.data.bnb''',
+      );
+  static dynamic xrp(dynamic response) => getJsonField(
+        response,
+        r'''$.data.xrp''',
       );
 }
 
@@ -685,11 +697,13 @@ class ApproveWssCall {
   static Future<ApiCallResponse> call({
     String uuid = '',
     String txhash = '',
+    String address = '',
   }) {
     final body = '''
 {
   "uuid": "${uuid}",
-  "txhash": "${txhash}"
+  "txhash": "${txhash}",
+  "address": "${address}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'ApproveWss',
@@ -699,6 +713,7 @@ class ApproveWssCall {
       params: {
         'uuid': uuid,
         'txhash': txhash,
+        'address': address,
       },
       body: body,
       bodyType: BodyType.JSON,
@@ -770,5 +785,148 @@ class SignhashbscCall {
   static dynamic gas(dynamic response) => getJsonField(
         response,
         r'''$.data.deployTransaction.gasLimit.hex''',
+      );
+}
+
+class StripeBalanceCall {
+  static Future<ApiCallResponse> call({
+    String uid = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'StripeBalance',
+      apiUrl: 'https://vagabonds.cloud/api/payments/account/balance?uid=${uid}',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+    );
+  }
+
+  static dynamic pending(dynamic response) => getJsonField(
+        response,
+        r'''$.data.pending[0].amount''',
+      );
+  static dynamic available(dynamic response) => getJsonField(
+        response,
+        r'''$.data.available[0].amount''',
+      );
+  static dynamic currency(dynamic response) => getJsonField(
+        response,
+        r'''$.data.available[0].currency''',
+      );
+  static dynamic stripeId(dynamic response) => getJsonField(
+        response,
+        r'''$.data.stripeId''',
+      );
+}
+
+class SignhashxrplCall {
+  static Future<ApiCallResponse> call({
+    String txblob = '',
+    String mnemonic = '',
+  }) {
+    final body = '''
+{
+"txblob": "${txblob}",
+"mnemonic": "${mnemonic}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'signhashxrpl',
+      apiUrl: 'https://vagabonds.cloud/api/app/signxrpl',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'txblob': txblob,
+        'mnemonic': mnemonic,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+
+  static dynamic signer(dynamic response) => getJsonField(
+        response,
+        r'''$.data.signer.address''',
+      );
+  static dynamic address(dynamic response) => getJsonField(
+        response,
+        r'''$.data.address''',
+      );
+  static dynamic hash(dynamic response) => getJsonField(
+        response,
+        r'''$.data.deployTransaction.hash''',
+      );
+  static dynamic gas(dynamic response) => getJsonField(
+        response,
+        r'''$.data.deployTransaction.gasLimit.hex''',
+      );
+}
+
+class TransferBSCCall {
+  static Future<ApiCallResponse> call({
+    String address = '',
+    String amount = '',
+    String mnemonic = '',
+  }) {
+    final body = '''
+{
+  "address": "${address}",
+  "amount": "${amount}",
+  "mnemonic": "${mnemonic}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'TransferBSC',
+      apiUrl: 'https://vagabonds.cloud/api/app/transferBSC',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'address': address,
+        'amount': amount,
+        'mnemonic': mnemonic,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+
+  static dynamic txhash(dynamic response) => getJsonField(
+        response,
+        r'''$.data.transactionHash''',
+      );
+}
+
+class GasBSCCall {
+  static Future<ApiCallResponse> call({
+    String address = '',
+    String amount = '',
+    String mnemonic = '',
+  }) {
+    final body = '''
+{
+  "address": "${address}",
+  "amount": "${amount}",
+  "mnemonic": "${mnemonic}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'GasBSC',
+      apiUrl: 'https://vagabonds.cloud/api/app/gasBSC',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'address': address,
+        'amount': amount,
+        'mnemonic': mnemonic,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+
+  static dynamic gas(dynamic response) => getJsonField(
+        response,
+        r'''$.data.hex''',
       );
 }

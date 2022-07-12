@@ -263,6 +263,30 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
+              name: 'transferFundsBSC',
+              path: 'transferFundsBSC',
+              requireAuth: true,
+              builder: (context, params) => TransferFundsBSCWidget(),
+            ),
+            FFRoute(
+              name: 'transferFundsVerifyBSC',
+              path: 'transferFundsVerifyBSC',
+              requireAuth: true,
+              builder: (context, params) => TransferFundsVerifyBSCWidget(),
+            ),
+            FFRoute(
+              name: 'transferFundsXRPL',
+              path: 'transferFundsXRPL',
+              requireAuth: true,
+              builder: (context, params) => TransferFundsXRPLWidget(),
+            ),
+            FFRoute(
+              name: 'transferFundsVerifyXRPL',
+              path: 'transferFundsVerifyXRPL',
+              requireAuth: true,
+              builder: (context, params) => TransferFundsVerifyXRPLWidget(),
+            ),
+            FFRoute(
               name: 'TransactionApproval',
               path: 'processQR/:type',
               requireAuth: true,
@@ -295,6 +319,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'test1',
               requireAuth: true,
               builder: (context, params) => WalletsCardsWidget(),
+            ),
+            FFRoute(
+              name: 'WalletInformation',
+              path: 'walletInformation',
+              requireAuth: true,
+              builder: (context, params) => WalletInformationWidget(),
             ),
             FFRoute(
               name: 'SwapTokens',
@@ -330,6 +360,33 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 gas: params.getParam('gas', ParamType.String),
                 hash: params.getParam('hash', ParamType.String),
                 owner: params.getParam('owner', ParamType.String),
+                address: params.getParam('address', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'XRPLQRScan',
+              path: 'xRPLQRScan',
+              requireAuth: true,
+              builder: (context, params) => XRPLQRScanWidget(),
+            ),
+            FFRoute(
+              name: 'XRPLTransactionApproval',
+              path: 'xrplprocessQR/:type',
+              requireAuth: true,
+              builder: (context, params) => XRPLTransactionApprovalWidget(
+                type: params.getParam('type', ParamType.String),
+                uuid: params.getParam('uuid', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'XRPLProcessQR',
+              path: 'xrplProcessQR',
+              builder: (context, params) => XRPLProcessQRWidget(
+                type: params.getParam('type', ParamType.String),
+                gas: params.getParam('gas', ParamType.String),
+                hash: params.getParam('hash', ParamType.String),
+                owner: params.getParam('owner', ParamType.String),
+                address: params.getParam('address', ParamType.String),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

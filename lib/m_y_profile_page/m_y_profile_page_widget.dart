@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MYProfilePageWidget extends StatefulWidget {
@@ -125,14 +126,13 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           ),
                                           child: FlutterFlowIconButton(
                                             borderColor: Colors.transparent,
-                                            borderRadius: 30,
                                             buttonSize: 60,
-                                            icon: Icon(
-                                              Icons.close,
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.solidCreditCard,
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .textColor,
-                                              size: 34,
+                                              size: 28,
                                             ),
                                             onPressed: () async {
                                               context.pushNamed('MY_Card');
@@ -202,95 +202,68 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                       ),
                     ),
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'My Account',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          context.pushNamed(
-                            'editProfile',
-                            queryParams: {
-                              'userProfile': serializeParam(
-                                  mYProfilePageUsersRecord.reference,
-                                  ParamType.DocumentReference),
-                            }.withoutNulls,
-                          );
-                        },
-                        child: Material(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).background,
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            context.pushNamed(
+                              'editProfile',
+                              queryParams: {
+                                'userProfile': serializeParam(
+                                    mYProfilePageUsersRecord.reference,
+                                    ParamType.DocumentReference),
+                              }.withoutNulls,
+                            );
+                          },
+                          child: Material(
+                            color: Colors.transparent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color:
-                                    FlutterFlowTheme.of(context).darkBackground,
-                                width: 2,
-                              ),
                             ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Edit Profile',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                  FlutterFlowIconButton(
-                                    borderColor: Colors.transparent,
-                                    borderRadius: 30,
-                                    buttonSize: 46,
-                                    icon: Icon(
-                                      Icons.chevron_right_rounded,
-                                      color: Color(0xFF95A1AC),
-                                      size: 20,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).background,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color:
+                                      FlutterFlowTheme.of(context).background,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Edit Profile',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                     ),
-                                    onPressed: () {
-                                      print('IconButton pressed ...');
-                                    },
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
@@ -315,8 +288,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                 color: FlutterFlowTheme.of(context).background,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: FlutterFlowTheme.of(context)
-                                      .darkBackground,
+                                  color:
+                                      FlutterFlowTheme.of(context).background,
                                   width: 2,
                                 ),
                               ),
@@ -335,22 +308,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           .override(
                                             fontFamily: 'Lexend Deca',
                                             color: Colors.white,
-                                            fontSize: 14,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.normal,
                                           ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
                                     ),
                                   ],
                                 ),
@@ -384,7 +344,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                 color: FlutterFlowTheme.of(context).background,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: Color(0xFF090F13),
+                                  color:
+                                      FlutterFlowTheme.of(context).background,
                                   width: 2,
                                 ),
                               ),
@@ -403,22 +364,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           .override(
                                             fontFamily: 'Lexend Deca',
                                             color: Colors.white,
-                                            fontSize: 14,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.normal,
                                           ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
                                     ),
                                   ],
                                 ),
@@ -452,8 +400,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                 color: FlutterFlowTheme.of(context).background,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: Color(0xFF090F13),
-                                  width: 2,
+                                  color:
+                                      FlutterFlowTheme.of(context).background,
+                                  width: 0,
                                 ),
                               ),
                               child: Padding(
@@ -471,22 +420,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           .override(
                                             fontFamily: 'Lexend Deca',
                                             color: Colors.white,
-                                            fontSize: 14,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.normal,
                                           ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
                                     ),
                                   ],
                                 ),
@@ -520,8 +456,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                 color: FlutterFlowTheme.of(context).background,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: Color(0xFF090F13),
-                                  width: 2,
+                                  color:
+                                      FlutterFlowTheme.of(context).background,
+                                  width: 0,
                                 ),
                               ),
                               child: Padding(
@@ -539,22 +476,9 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           .override(
                                             fontFamily: 'Lexend Deca',
                                             color: Colors.white,
-                                            fontSize: 14,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.normal,
                                           ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
                                     ),
                                   ],
                                 ),
@@ -566,75 +490,7 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            context.pushNamed('Wallet');
-                          },
-                          child: Material(
-                            color: Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).background,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xFF090F13),
-                                  width: 2,
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Wallets',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -658,7 +514,8 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                 color: FlutterFlowTheme.of(context).background,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: Color(0xFF090F13),
+                                  color:
+                                      FlutterFlowTheme.of(context).background,
                                   width: 2,
                                 ),
                               ),
@@ -676,166 +533,28 @@ class _MYProfilePageWidgetState extends State<MYProfilePageWidget> {
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Lexend Deca',
-                                            color: Colors.white,
-                                            fontSize: 14,
+                                            color: FlutterFlowTheme.of(context)
+                                                .grayLight,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.normal,
                                           ),
                                     ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.login_outlined,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 10, 0, 0),
+                                      child: FlutterFlowIconButton(
+                                        borderColor: Colors.transparent,
+                                        borderRadius: 4,
+                                        buttonSize: 46,
+                                        icon: Icon(
+                                          Icons.login_outlined,
+                                          color: Color(0xFF95A1AC),
+                                          size: 28,
+                                        ),
+                                        onPressed: () {
+                                          print('IconButton pressed ...');
+                                        },
                                       ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            context.pushNamed(
-                              'BSCTransactionApproval',
-                              params: {
-                                'type': serializeParam(
-                                    '7b2274797065223a226273637369676e222c2277736964223a2273564d7046615653577770526379644862796a73222c22666c6167223a2231227d',
-                                    ParamType.String),
-                              }.withoutNulls,
-                            );
-                          },
-                          child: Material(
-                            color: Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).background,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xFF090F13),
-                                  width: 2,
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Dev',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            context.pushNamed('NFTGallery');
-                          },
-                          child: Material(
-                            color: Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).background,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Color(0xFF090F13),
-                                  width: 2,
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 0, 4, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'NFTS',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 30,
-                                      buttonSize: 46,
-                                      icon: Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: Color(0xFF95A1AC),
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        print('IconButton pressed ...');
-                                      },
                                     ),
                                   ],
                                 ),

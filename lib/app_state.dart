@@ -86,11 +86,11 @@ class FFAppState {
 
   String rawLog = '';
 
-  String balance = '';
+  String balance = '0';
 
-  String income = '';
+  String income = '0';
 
-  String spending = '';
+  String spending = '0';
 
   bool privacy = false;
 
@@ -170,6 +170,16 @@ class FFAppState {
   List<String> vagamnemoiclist = [];
 
   dynamic Zero = jsonDecode('{\"vaga\":0}');
+
+  String email = '';
+
+  String balancevgb = '';
+
+  String balancevgo = '';
+
+  String balancebnb = '';
+
+  String balancexrp = '';
 }
 
 LatLng _latLngFromString(String val) {

@@ -102,7 +102,7 @@ class _CooldownWidgetState extends State<CooldownWidget> {
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 40,
+                        borderRadius: BorderRadius.circular(40),
                       ),
                     ),
                   ),

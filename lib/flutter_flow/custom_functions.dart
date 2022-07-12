@@ -10,7 +10,20 @@ import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../auth/auth_util.dart';
 
-int toInt(String rewards) {
-  var b = int.parse(rewards);
+double toInt(String rewards) {
+  var b = double.parse(rewards);
   return b;
+}
+
+String allCaps(String value) {
+  return value?.toUpperCase();
+}
+
+double stripeToBalance(String amount) {
+  double b = double.parse(amount) / 100;
+  return b;
+}
+
+String stripeDashboard(String stringId) {
+  return "https://dashboard.stripe.com/${stringId}/test/dashboard";
 }

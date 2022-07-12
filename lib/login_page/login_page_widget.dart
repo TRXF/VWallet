@@ -4,6 +4,7 @@ import '../components/service_down_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -279,7 +280,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             color: Colors.transparent,
                                             width: 1,
                                           ),
-                                          borderRadius: 8,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                       ),
                                     ),
@@ -298,6 +300,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
                                         setState(() => FFAppState().password =
                                             passwordLoginController.text);
+                                        setState(() => FFAppState().email =
+                                            emailAddressLoginController.text);
                                         vagaWallet = await UserCall.call(
                                           uid: currentUserUid,
                                         );
@@ -335,7 +339,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                           color: Colors.transparent,
                                           width: 1,
                                         ),
-                                        borderRadius: 30,
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
                                     ),
                                   ],
@@ -343,6 +347,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.01,
+                        height: MediaQuery.of(context).size.height * 0.01,
+                        child: custom_widgets.Bullcrap(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                          height: MediaQuery.of(context).size.height * 0.01,
                         ),
                       ),
                     ],

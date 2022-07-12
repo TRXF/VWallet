@@ -413,7 +413,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 30,
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ).animated([animationsMap['buttonOnPageLoadAnimation1']]);
                   },
@@ -457,7 +457,7 @@ class _CompleteProfileWidgetState extends State<CompleteProfileWidget>
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 30,
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ).animated([animationsMap['buttonOnPageLoadAnimation2']]);
                   },

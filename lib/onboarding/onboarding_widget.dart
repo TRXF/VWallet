@@ -46,8 +46,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance?.addPostFrameCallback((_) async {
-      if ((valueOrDefault(currentUserDocument?.vagaWallet, '') != null) &&
-          (valueOrDefault(currentUserDocument?.vagaWallet, '') != '')) {
+      if ((valueOrDefault(currentUserDocument?.vagaWallet, '') != null &&
+          valueOrDefault(currentUserDocument?.vagaWallet, '') != '')) {
         context.pushNamed('loginPage');
       } else {
         return;
@@ -444,7 +444,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget>
                               color: Colors.transparent,
                               width: 1,
                             ),
-                            borderRadius: 30,
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                       ),

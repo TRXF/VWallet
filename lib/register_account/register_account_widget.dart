@@ -298,7 +298,7 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                                       color: Colors.transparent,
                                       width: 1,
                                     ),
-                                    borderRadius: 30,
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
                                 ),
                               ),
@@ -363,7 +363,8 @@ class _RegisterAccountWidgetState extends State<RegisterAccountWidget> {
                                               color: Colors.transparent,
                                               width: 1,
                                             ),
-                                            borderRadius: 12,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
                                         ),
                                         Text(

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class FlutterFlowTheme {
-  static FlutterFlowTheme of(BuildContext context) => LightModeTheme();
+  static FlutterFlowTheme of(BuildContext context) {
+    return LightModeTheme();
+  }
 
   Color primaryColor;
   Color secondaryColor;
@@ -24,48 +26,22 @@ abstract class FlutterFlowTheme {
   Color primaryBtnText;
   Color lineColor;
 
-  TextStyle get title1 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: textColor,
-        fontWeight: FontWeight.bold,
-        fontSize: 24,
-      );
-  TextStyle get title2 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: primaryColor,
-        fontWeight: FontWeight.w500,
-        fontSize: 28,
-      );
-  TextStyle get title3 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: textColor,
-        fontWeight: FontWeight.w500,
-        fontSize: 20,
-      );
-  TextStyle get subtitle1 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: grayLight,
-        fontWeight: FontWeight.w500,
-        fontSize: 18,
-      );
-  TextStyle get subtitle2 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: grayLight,
-        fontWeight: FontWeight.normal,
-        fontSize: 16,
-      );
-  TextStyle get bodyText1 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: grayLight,
-        fontWeight: FontWeight.normal,
-        fontSize: 14,
-      );
-  TextStyle get bodyText2 => GoogleFonts.getFont(
-        'Lexend Deca',
-        color: textColor,
-        fontWeight: FontWeight.normal,
-        fontSize: 14,
-      );
+  String get title1Family => typography.title1Family;
+  TextStyle get title1 => typography.title1;
+  String get title2Family => typography.title2Family;
+  TextStyle get title2 => typography.title2;
+  String get title3Family => typography.title3Family;
+  TextStyle get title3 => typography.title3;
+  String get subtitle1Family => typography.subtitle1Family;
+  TextStyle get subtitle1 => typography.subtitle1;
+  String get subtitle2Family => typography.subtitle2Family;
+  TextStyle get subtitle2 => typography.subtitle2;
+  String get bodyText1Family => typography.bodyText1Family;
+  TextStyle get bodyText1 => typography.bodyText1;
+  String get bodyText2Family => typography.bodyText2Family;
+  TextStyle get bodyText2 => typography.bodyText2;
+
+  Typography get typography => ThemeTypography(this);
 }
 
 class LightModeTheme extends FlutterFlowTheme {
@@ -88,12 +64,86 @@ class LightModeTheme extends FlutterFlowTheme {
   Color lineColor = Color(0xFFE0E3E7);
 }
 
+abstract class Typography {
+  String get title1Family;
+  TextStyle get title1;
+  String get title2Family;
+  TextStyle get title2;
+  String get title3Family;
+  TextStyle get title3;
+  String get subtitle1Family;
+  TextStyle get subtitle1;
+  String get subtitle2Family;
+  TextStyle get subtitle2;
+  String get bodyText1Family;
+  TextStyle get bodyText1;
+  String get bodyText2Family;
+  TextStyle get bodyText2;
+}
+
+class ThemeTypography extends Typography {
+  ThemeTypography(this.theme);
+
+  final FlutterFlowTheme theme;
+
+  String get title1Family => 'Lexend Deca';
+  TextStyle get title1 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.textColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 24,
+      );
+  String get title2Family => 'Lexend Deca';
+  TextStyle get title2 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.primaryColor,
+        fontWeight: FontWeight.w500,
+        fontSize: 28,
+      );
+  String get title3Family => 'Lexend Deca';
+  TextStyle get title3 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.textColor,
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+      );
+  String get subtitle1Family => 'Lexend Deca';
+  TextStyle get subtitle1 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.grayLight,
+        fontWeight: FontWeight.w500,
+        fontSize: 18,
+      );
+  String get subtitle2Family => 'Lexend Deca';
+  TextStyle get subtitle2 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.grayLight,
+        fontWeight: FontWeight.normal,
+        fontSize: 16,
+      );
+  String get bodyText1Family => 'Lexend Deca';
+  TextStyle get bodyText1 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.grayLight,
+        fontWeight: FontWeight.normal,
+        fontSize: 14,
+      );
+  String get bodyText2Family => 'Lexend Deca';
+  TextStyle get bodyText2 => GoogleFonts.getFont(
+        'Lexend Deca',
+        color: theme.textColor,
+        fontWeight: FontWeight.normal,
+        fontSize: 14,
+      );
+}
+
 extension TextStyleHelper on TextStyle {
   TextStyle override({
     String fontFamily,
     Color color,
     double fontSize,
     FontWeight fontWeight,
+    double letterSpacing,
     FontStyle fontStyle,
     bool useGoogleFonts = true,
     TextDecoration decoration,
@@ -104,6 +154,7 @@ extension TextStyleHelper on TextStyle {
               fontFamily,
               color: color ?? this.color,
               fontSize: fontSize ?? this.fontSize,
+              letterSpacing: letterSpacing ?? this.letterSpacing,
               fontWeight: fontWeight ?? this.fontWeight,
               fontStyle: fontStyle ?? this.fontStyle,
               decoration: decoration,
@@ -113,6 +164,7 @@ extension TextStyleHelper on TextStyle {
               fontFamily: fontFamily,
               color: color,
               fontSize: fontSize,
+              letterSpacing: letterSpacing,
               fontWeight: fontWeight,
               fontStyle: fontStyle,
               decoration: decoration,

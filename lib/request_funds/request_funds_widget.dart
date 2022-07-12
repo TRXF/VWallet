@@ -234,7 +234,7 @@ class _RequestFundsWidgetState extends State<RequestFundsWidget> {
                           color: Colors.transparent,
                           width: 1,
                         ),
-                        borderRadius: 12,
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ],

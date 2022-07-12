@@ -37,12 +37,22 @@ export 'tutorial_p_r_o_f_i_l_e/tutorial_p_r_o_f_i_l_e_widget.dart'
 export 'wallet/wallet_widget.dart' show WalletWidget;
 export 'n_f_t_gallery/n_f_t_gallery_widget.dart' show NFTGalleryWidget;
 export 'wallet_details/wallet_details_widget.dart' show WalletDetailsWidget;
+export 'transfer_funds_b_s_c/transfer_funds_b_s_c_widget.dart'
+    show TransferFundsBSCWidget;
+export 'transfer_funds_verify_b_s_c/transfer_funds_verify_b_s_c_widget.dart'
+    show TransferFundsVerifyBSCWidget;
+export 'transfer_funds_x_r_p_l/transfer_funds_x_r_p_l_widget.dart'
+    show TransferFundsXRPLWidget;
+export 'transfer_funds_verify_x_r_p_l/transfer_funds_verify_x_r_p_l_widget.dart'
+    show TransferFundsVerifyXRPLWidget;
 export 'transaction_approval/transaction_approval_widget.dart'
     show TransactionApprovalWidget;
 export 'process_q_r/process_q_r_widget.dart' show ProcessQRWidget;
 export 'cooldown/cooldown_widget.dart' show CooldownWidget;
 export 'cheater/cheater_widget.dart' show CheaterWidget;
 export 'wallets_cards/wallets_cards_widget.dart' show WalletsCardsWidget;
+export 'wallet_information/wallet_information_widget.dart'
+    show WalletInformationWidget;
 export 'swap_tokens/swap_tokens_widget.dart' show SwapTokensWidget;
 export 'rewards_list/rewards_list_widget.dart' show RewardsListWidget;
 export 'activate_account/activate_account_widget.dart'
@@ -51,3 +61,8 @@ export 'b_s_c_transaction_approval/b_s_c_transaction_approval_widget.dart'
     show BSCTransactionApprovalWidget;
 export 'b_s_c_process_q_r/b_s_c_process_q_r_widget.dart'
     show BSCProcessQRWidget;
+export 'x_r_p_l_q_r_scan/x_r_p_l_q_r_scan_widget.dart' show XRPLQRScanWidget;
+export 'x_r_p_l_transaction_approval/x_r_p_l_transaction_approval_widget.dart'
+    show XRPLTransactionApprovalWidget;
+export 'x_r_p_l_process_q_r/x_r_p_l_process_q_r_widget.dart'
+    show XRPLProcessQRWidget;

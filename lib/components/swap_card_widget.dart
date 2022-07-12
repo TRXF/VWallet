@@ -208,7 +208,7 @@ class _SwapCardWidgetState extends State<SwapCardWidget> {
                             color: Colors.transparent,
                             width: 1,
                           ),
-                          borderRadius: 8,
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       FFButtonWidget(
@@ -253,7 +253,7 @@ class _SwapCardWidgetState extends State<SwapCardWidget> {
                             color: Colors.transparent,
                             width: 1,
                           ),
-                          borderRadius: 12,
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ],

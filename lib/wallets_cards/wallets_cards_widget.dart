@@ -8,6 +8,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -25,9 +26,12 @@ class WalletsCardsWidget extends StatefulWidget {
 
 class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
     with TickerProviderStateMixin {
-  PageController pageViewController;
-  var bschash = '';
+  ApiCallResponse bscUnlocked;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  ApiCallResponse reloadedBalance;
+  var bschash = '';
+  PageController pageViewController;
+  ApiCallResponse reloadedBalanceXRPL;
   final animationsMap = {
     'rowOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -130,16 +134,23 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance?.addPostFrameCallback((_) async {
-      if ((valueOrDefault(currentUserDocument?.xrplWallet, '') != null) &&
-          (valueOrDefault(currentUserDocument?.xrplWallet, '') != '')) {
+      if ((valueOrDefault(currentUserDocument?.xrplWallet, '') != null &&
+          valueOrDefault(currentUserDocument?.xrplWallet, '') != '')) {
         setState(() => FFAppState().showxrplbutton = false);
       } else {
         setState(() => FFAppState().showxrplbutton = true);
       }
 
-      if ((valueOrDefault(currentUserDocument?.bscWallet, '') != null) &&
-          (valueOrDefault(currentUserDocument?.bscWallet, '') != '')) {
+      if ((valueOrDefault(currentUserDocument?.bscWallet, '') != null &&
+          valueOrDefault(currentUserDocument?.bscWallet, '') != '')) {
         setState(() => FFAppState().showbscbutton = false);
+        bscUnlocked = await UnlockbscCall.call(
+          uid: currentUserUid,
+        );
+        setState(() => FFAppState().bscPrivateKey = getJsonField(
+              (bscUnlocked?.jsonBody ?? ''),
+              r'''$.data''',
+            ).toString());
       } else {
         setState(() => FFAppState().showbscbutton = true);
       }
@@ -399,9 +410,16 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                         Text(
                                                                           valueOrDefault<
                                                                               String>(
-                                                                            BalanceCall.vaga(
-                                                                              (pageViewBalanceResponse?.jsonBody ?? ''),
-                                                                            ).toString(),
+                                                                            formatNumber(
+                                                                              functions.toInt(valueOrDefault<String>(
+                                                                                BalanceCall.vaga(
+                                                                                  (pageViewBalanceResponse?.jsonBody ?? ''),
+                                                                                ).toString(),
+                                                                                '0',
+                                                                              )),
+                                                                              formatType: FormatType.decimal,
+                                                                              decimalType: DecimalType.automatic,
+                                                                            ),
                                                                             '0',
                                                                           ),
                                                                           style: FlutterFlowTheme.of(context)
@@ -517,6 +535,10 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                           ],
                                         ),
                                       ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [],
+                                    ),
                                   ],
                                 ),
                                 Row(
@@ -530,34 +552,460 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                       desktop: false,
                                     ))
                                       Expanded(
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              if (FFAppState().showbscbutton ??
-                                                  true)
+                                        child: RefreshIndicator(
+                                          onRefresh: () async {
+                                            reloadedBalance =
+                                                await BalanceCall.call(
+                                              uid: currentUserUid,
+                                            );
+                                            setState(() =>
+                                                FFAppState().balancevgo =
+                                                    valueOrDefault<String>(
+                                                  BalanceCall.bsc(
+                                                    (reloadedBalance
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ).toString(),
+                                                  '0',
+                                                ));
+                                            setState(() =>
+                                                FFAppState().balancebnb =
+                                                    valueOrDefault<String>(
+                                                  BalanceCall.bnb(
+                                                    (reloadedBalance
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ).toString(),
+                                                  '0',
+                                                ));
+                                          },
+                                          child: SingleChildScrollView(
+                                            physics:
+                                                const AlwaysScrollableScrollPhysics(),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                if (FFAppState()
+                                                        .showbscbutton ??
+                                                    true)
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 45, 0, 25),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        FFButtonWidget(
+                                                          onPressed: () async {
+                                                            context.pushNamed(
+                                                                'CreateBSCWallet');
+                                                          },
+                                                          text:
+                                                              'Create BSC Wallet',
+                                                          options:
+                                                              FFButtonOptions(
+                                                            width: 300,
+                                                            height: 70,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryColor,
+                                                            textStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .subtitle2
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Lexend Deca',
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16,
+                                                                    ),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              width: 1,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                if (!(FFAppState()
+                                                        .showbscbutton) ??
+                                                    true)
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 4, 0, 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.92,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                blurRadius: 6,
+                                                                color: Color(
+                                                                    0x4B1A1F24),
+                                                                offset: Offset(
+                                                                    0, 2),
+                                                              )
+                                                            ],
+                                                            gradient:
+                                                                LinearGradient(
+                                                              colors: [
+                                                                Color(
+                                                                    0xFFECC500),
+                                                                Color(
+                                                                    0xFFEEA400)
+                                                              ],
+                                                              stops: [0, 1],
+                                                              begin:
+                                                                  AlignmentDirectional(
+                                                                      0.94, -1),
+                                                              end:
+                                                                  AlignmentDirectional(
+                                                                      -0.94, 1),
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                          ),
+                                                          child: InkWell(
+                                                            onTap: () async {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: MediaQuery.of(
+                                                                            context)
+                                                                        .viewInsets,
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          300,
+                                                                      child:
+                                                                          BSCDetailCardWidget(),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            20,
+                                                                            20,
+                                                                            20,
+                                                                            0),
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          'VGO',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyText1
+                                                                              .override(
+                                                                                fontFamily: 'Lexend Deca',
+                                                                                color: FlutterFlowTheme.of(context).textColor,
+                                                                                fontSize: 18,
+                                                                              ),
+                                                                        ),
+                                                                        FlutterFlowIconButton(
+                                                                          borderColor:
+                                                                              Colors.transparent,
+                                                                          borderRadius:
+                                                                              30,
+                                                                          borderWidth:
+                                                                              1,
+                                                                          buttonSize:
+                                                                              30,
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.info_outline_rounded,
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).textColor,
+                                                                            size:
+                                                                                15,
+                                                                          ),
+                                                                          onPressed:
+                                                                              () async {
+                                                                            context.pushNamed('WalletInformation');
+                                                                          },
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            20,
+                                                                            24,
+                                                                            20,
+                                                                            0),
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: [
+                                                                        Text(
+                                                                          'Balance',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyText1
+                                                                              .override(
+                                                                                fontFamily: 'Lexend Deca',
+                                                                                color: FlutterFlowTheme.of(context).textColor,
+                                                                              ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            20,
+                                                                            8,
+                                                                            20,
+                                                                            0),
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: [
+                                                                        Text(
+                                                                          valueOrDefault<
+                                                                              String>(
+                                                                            formatNumber(
+                                                                              functions.toInt(valueOrDefault<String>(
+                                                                                BalanceCall.bsc(
+                                                                                  (pageViewBalanceResponse?.jsonBody ?? ''),
+                                                                                ).toString(),
+                                                                                '0',
+                                                                              )),
+                                                                              formatType: FormatType.decimal,
+                                                                              decimalType: DecimalType.automatic,
+                                                                            ),
+                                                                            '0',
+                                                                          ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .title1
+                                                                              .override(
+                                                                                fontFamily: 'Lexend Deca',
+                                                                                fontSize: 32,
+                                                                              ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            20,
+                                                                            12,
+                                                                            20,
+                                                                            16),
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          UserCall.bscwallet(
+                                                                            (walletsCardsUserResponse?.jsonBody ??
+                                                                                ''),
+                                                                          ).toString().maybeHandleOverflow(
+                                                                                maxChars: 32,
+                                                                                replacement: '…',
+                                                                              ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyText1
+                                                                              .override(
+                                                                                fontFamily: 'Roboto Mono',
+                                                                                color: FlutterFlowTheme.of(context).textColor,
+                                                                                fontSize: 10,
+                                                                              ),
+                                                                        ),
+                                                                        Text(
+                                                                          'BSC',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyText1
+                                                                              .override(
+                                                                                fontFamily: 'Roboto Mono',
+                                                                                color: FlutterFlowTheme.of(context).textColor,
+                                                                              ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ).animated([
+                                                      animationsMap[
+                                                          'rowOnPageLoadAnimation2']
+                                                    ]),
+                                                  ),
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
-                                                      .fromSTEB(0, 45, 0, 25),
+                                                      .fromSTEB(20, 30, 20, 0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Image.asset(
+                                                            'assets/images/Binance-coin-bnb-logo.png',
+                                                            width: 35,
+                                                            height: 35,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(20,
+                                                                      0, 0, 0),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Text(
+                                                                valueOrDefault<
+                                                                    String>(
+                                                                  formatNumber(
+                                                                    functions.toInt(
+                                                                        valueOrDefault<
+                                                                            String>(
+                                                                      BalanceCall
+                                                                          .bnb(
+                                                                        (pageViewBalanceResponse?.jsonBody ??
+                                                                            ''),
+                                                                      ).toString(),
+                                                                      '0',
+                                                                    )),
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .decimal,
+                                                                    decimalType:
+                                                                        DecimalType
+                                                                            .automatic,
+                                                                  ),
+                                                                  '0',
+                                                                ).maybeHandleOverflow(
+                                                                  maxChars: 28,
+                                                                  replacement:
+                                                                      '…',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0,
+                                                                        0,
+                                                                        10,
+                                                                        0),
+                                                            child: Text(
+                                                              'BNB',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyText1,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(15, 50, 15, 0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
-                                                            .center,
+                                                            .spaceBetween,
                                                     children: [
                                                       FFButtonWidget(
                                                         onPressed: () async {
                                                           context.pushNamed(
-                                                              'CreateBSCWallet');
+                                                              'transferFundsBSC');
                                                         },
-                                                        text:
-                                                            'Create BSC Wallet',
+                                                        text: 'Send',
                                                         options:
                                                             FFButtonOptions(
-                                                          width: 300,
+                                                          width: 150,
                                                           height: 70,
                                                           color: FlutterFlowTheme
                                                                   .of(context)
@@ -580,18 +1028,53 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                 .transparent,
                                                             width: 1,
                                                           ),
-                                                          borderRadius: 12,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                      ),
+                                                      FFButtonWidget(
+                                                        onPressed: () {
+                                                          print(
+                                                              'Button pressed ...');
+                                                        },
+                                                        text: 'Request',
+                                                        options:
+                                                            FFButtonOptions(
+                                                          width: 150,
+                                                          height: 70,
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                          textStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .subtitle2
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Lexend Deca',
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        16,
+                                                                  ),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors
+                                                                .transparent,
+                                                            width: 1,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                              if (!(FFAppState()
-                                                      .showbscbutton) ??
-                                                  true)
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
-                                                      .fromSTEB(0, 4, 0, 0),
+                                                      .fromSTEB(0, 50, 0, 0),
                                                   child: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -599,366 +1082,76 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Container(
-                                                        width: MediaQuery.of(
+                                                      FlutterFlowIconButton(
+                                                        borderColor:
+                                                            Colors.transparent,
+                                                        borderRadius: 30,
+                                                        borderWidth: 1,
+                                                        buttonSize: 60,
+                                                        fillColor:
+                                                            FlutterFlowTheme.of(
                                                                     context)
-                                                                .size
-                                                                .width *
-                                                            0.92,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              blurRadius: 6,
-                                                              color: Color(
-                                                                  0x4B1A1F24),
-                                                              offset:
-                                                                  Offset(0, 2),
-                                                            )
-                                                          ],
-                                                          gradient:
-                                                              LinearGradient(
-                                                            colors: [
-                                                              Color(0xFFECC500),
-                                                              Color(0xFFEEA400)
-                                                            ],
-                                                            stops: [0, 1],
-                                                            begin:
-                                                                AlignmentDirectional(
-                                                                    0.94, -1),
-                                                            end:
-                                                                AlignmentDirectional(
-                                                                    -0.94, 1),
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
+                                                                .primaryColor,
+                                                        icon: Icon(
+                                                          Icons.qr_code_rounded,
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .textColor,
+                                                          size: 30,
                                                         ),
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            await showModalBottomSheet(
-                                                              isScrollControlled:
-                                                                  true,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return Padding(
-                                                                  padding: MediaQuery.of(
-                                                                          context)
-                                                                      .viewInsets,
-                                                                  child:
-                                                                      Container(
-                                                                    height: 300,
-                                                                    child:
-                                                                        BSCDetailCardWidget(),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            );
-                                                          },
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20,
-                                                                          20,
-                                                                          20,
-                                                                          0),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    children: [
-                                                                      Text(
-                                                                        'VGO',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1
-                                                                            .override(
-                                                                              fontFamily: 'Lexend Deca',
-                                                                              color: FlutterFlowTheme.of(context).textColor,
-                                                                              fontSize: 18,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20,
-                                                                          24,
-                                                                          20,
-                                                                          0),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    children: [
-                                                                      Text(
-                                                                        'Balance',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1
-                                                                            .override(
-                                                                              fontFamily: 'Lexend Deca',
-                                                                              color: FlutterFlowTheme.of(context).textColor,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20,
-                                                                          8,
-                                                                          20,
-                                                                          0),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    children: [
-                                                                      Text(
-                                                                        valueOrDefault<
-                                                                            String>(
-                                                                          BalanceCall
-                                                                              .bsc(
-                                                                            (pageViewBalanceResponse?.jsonBody ??
-                                                                                ''),
-                                                                          ).toString(),
-                                                                          '0',
-                                                                        ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .title1
-                                                                            .override(
-                                                                              fontFamily: 'Lexend Deca',
-                                                                              fontSize: 32,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20,
-                                                                          12,
-                                                                          20,
-                                                                          16),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                        UserCall
-                                                                                .bscwallet(
-                                                                          (walletsCardsUserResponse?.jsonBody ??
-                                                                              ''),
-                                                                        )
-                                                                            .toString()
-                                                                            .maybeHandleOverflow(
-                                                                              maxChars: 32,
-                                                                              replacement: '…',
-                                                                            ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1
-                                                                            .override(
-                                                                              fontFamily: 'Roboto Mono',
-                                                                              color: FlutterFlowTheme.of(context).textColor,
-                                                                              fontSize: 10,
-                                                                            ),
-                                                                      ),
-                                                                      Text(
-                                                                        'BSC',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1
-                                                                            .override(
-                                                                              fontFamily: 'Roboto Mono',
-                                                                              color: FlutterFlowTheme.of(context).textColor,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        onPressed: () async {
+                                                          bschash =
+                                                              await FlutterBarcodeScanner
+                                                                  .scanBarcode(
+                                                            '#C62828', // scanning line color
+                                                            'Cancel', // cancel button text
+                                                            true, // whether to show the flash icon
+                                                            ScanMode.QR,
+                                                          );
+
+                                                          context.pushNamed(
+                                                            'BSCTransactionApproval',
+                                                            params: {
+                                                              'type':
+                                                                  serializeParam(
+                                                                      bschash,
+                                                                      ParamType
+                                                                          .String),
+                                                            }.withoutNulls,
+                                                          );
+
+                                                          setState(() {});
+                                                        },
                                                       ),
                                                     ],
-                                                  ).animated([
-                                                    animationsMap[
-                                                        'rowOnPageLoadAnimation2']
-                                                  ]),
-                                                ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(15, 50, 15, 0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    FFButtonWidget(
-                                                      onPressed: () {
-                                                        print(
-                                                            'Button pressed ...');
-                                                      },
-                                                      text: 'Send',
-                                                      options: FFButtonOptions(
-                                                        width: 150,
-                                                        height: 70,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                        textStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .subtitle2
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 16,
-                                                                ),
-                                                        borderSide: BorderSide(
-                                                          color: Colors
-                                                              .transparent,
-                                                          width: 1,
-                                                        ),
-                                                        borderRadius: 12,
-                                                      ),
-                                                    ),
-                                                    FFButtonWidget(
-                                                      onPressed: () {
-                                                        print(
-                                                            'Button pressed ...');
-                                                      },
-                                                      text: 'Request',
-                                                      options: FFButtonOptions(
-                                                        width: 150,
-                                                        height: 70,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                        textStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .subtitle2
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 16,
-                                                                ),
-                                                        borderSide: BorderSide(
-                                                          color: Colors
-                                                              .transparent,
-                                                          width: 1,
-                                                        ),
-                                                        borderRadius: 12,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 50, 0, 0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    FlutterFlowIconButton(
-                                                      borderColor:
-                                                          Colors.transparent,
-                                                      borderRadius: 30,
-                                                      borderWidth: 1,
-                                                      buttonSize: 60,
-                                                      fillColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryColor,
-                                                      icon: Icon(
-                                                        Icons.qr_code_rounded,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .textColor,
-                                                        size: 30,
-                                                      ),
-                                                      onPressed: () async {
-                                                        bschash =
-                                                            await FlutterBarcodeScanner
-                                                                .scanBarcode(
-                                                          '#C62828', // scanning line color
-                                                          'Cancel', // cancel button text
-                                                          true, // whether to show the flash icon
-                                                          ScanMode.QR,
-                                                        );
-
-                                                        context.pushNamed(
-                                                          'BSCTransactionApproval',
-                                                          params: {
-                                                            'type': serializeParam(
-                                                                '7b2274797065223a226273637369676e222c2277736964223a2273564d7046615653577770526379644862796a73222c22666c6167223a2231227d',
-                                                                ParamType
-                                                                    .String),
-                                                          }.withoutNulls,
-                                                        );
-
-                                                        setState(() {});
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .darkBackground,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(0),
-                                                    bottomRight:
-                                                        Radius.circular(0),
-                                                    topLeft:
-                                                        Radius.circular(16),
-                                                    topRight:
-                                                        Radius.circular(16),
                                                   ),
                                                 ),
-                                              ).animated([
-                                                animationsMap[
-                                                    'containerOnPageLoadAnimation2']
-                                              ]),
-                                            ],
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .darkBackground,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(0),
+                                                      bottomRight:
+                                                          Radius.circular(0),
+                                                      topLeft:
+                                                          Radius.circular(16),
+                                                      topRight:
+                                                          Radius.circular(16),
+                                                    ),
+                                                  ),
+                                                ).animated([
+                                                  animationsMap[
+                                                      'containerOnPageLoadAnimation2']
+                                                ]),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -995,41 +1188,452 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                             }
                                             final columnUnlockxrplResponse =
                                                 snapshot.data;
-                                            return SingleChildScrollView(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  if (FFAppState()
-                                                          .showxrplbutton ??
-                                                      true)
+                                            return RefreshIndicator(
+                                              onRefresh: () async {
+                                                reloadedBalanceXRPL =
+                                                    await BalanceCall.call(
+                                                  uid: currentUserUid,
+                                                );
+                                                setState(() =>
+                                                    FFAppState().balancevgb =
+                                                        valueOrDefault<String>(
+                                                      BalanceCall.xrpl(
+                                                        (pageViewBalanceResponse
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ).toString(),
+                                                      '0',
+                                                    ));
+                                                setState(() =>
+                                                    FFAppState().balancexrp =
+                                                        valueOrDefault<String>(
+                                                      BalanceCall.xrp(
+                                                        (pageViewBalanceResponse
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ).toString(),
+                                                      '0',
+                                                    ));
+                                              },
+                                              child: SingleChildScrollView(
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    if (FFAppState()
+                                                            .showxrplbutton ??
+                                                        true)
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(0, 45,
+                                                                    0, 25),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            FFButtonWidget(
+                                                              onPressed:
+                                                                  () async {
+                                                                context.pushNamed(
+                                                                    'CreateXRPLWallet');
+                                                              },
+                                                              text:
+                                                                  'Create XRPL Wallet',
+                                                              options:
+                                                                  FFButtonOptions(
+                                                                width: 300,
+                                                                height: 70,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryColor,
+                                                                textStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .subtitle2
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Lexend Deca',
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  width: 1,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    if (!(FFAppState()
+                                                            .showxrplbutton) ??
+                                                        true)
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0, 4, 0, 0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.92,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    blurRadius:
+                                                                        6,
+                                                                    color: Color(
+                                                                        0x4B1A1F24),
+                                                                    offset:
+                                                                        Offset(
+                                                                            0,
+                                                                            2),
+                                                                  )
+                                                                ],
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                  colors: [
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .background,
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .darkBackground
+                                                                  ],
+                                                                  stops: [0, 1],
+                                                                  begin:
+                                                                      AlignmentDirectional(
+                                                                          0.94,
+                                                                          -1),
+                                                                  end:
+                                                                      AlignmentDirectional(
+                                                                          -0.94,
+                                                                          1),
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                              ),
+                                                              child: InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  await showModalBottomSheet(
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return Padding(
+                                                                        padding:
+                                                                            MediaQuery.of(context).viewInsets,
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              300,
+                                                                          child:
+                                                                              XRPLDetailCardWidget(),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
+                                                                child:
+                                                                    SingleChildScrollView(
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            20,
+                                                                            20,
+                                                                            20,
+                                                                            0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              'VGB',
+                                                                              style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                    fontFamily: 'Lexend Deca',
+                                                                                    color: FlutterFlowTheme.of(context).textColor,
+                                                                                    fontSize: 18,
+                                                                                  ),
+                                                                            ),
+                                                                            FlutterFlowIconButton(
+                                                                              borderColor: Colors.transparent,
+                                                                              borderRadius: 30,
+                                                                              borderWidth: 1,
+                                                                              buttonSize: 30,
+                                                                              icon: Icon(
+                                                                                Icons.info_outline_rounded,
+                                                                                color: FlutterFlowTheme.of(context).textColor,
+                                                                                size: 15,
+                                                                              ),
+                                                                              onPressed: () async {
+                                                                                context.pushNamed('WalletInformation');
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            20,
+                                                                            24,
+                                                                            20,
+                                                                            0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Text(
+                                                                              'Balance',
+                                                                              style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                    fontFamily: 'Lexend Deca',
+                                                                                    color: FlutterFlowTheme.of(context).textColor,
+                                                                                  ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            20,
+                                                                            8,
+                                                                            20,
+                                                                            0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Text(
+                                                                              valueOrDefault<String>(
+                                                                                formatNumber(
+                                                                                  functions.toInt(valueOrDefault<String>(
+                                                                                    BalanceCall.xrpl(
+                                                                                      (pageViewBalanceResponse?.jsonBody ?? ''),
+                                                                                    ).toString(),
+                                                                                    '0',
+                                                                                  )),
+                                                                                  formatType: FormatType.decimal,
+                                                                                  decimalType: DecimalType.automatic,
+                                                                                ),
+                                                                                '0',
+                                                                              ),
+                                                                              style: FlutterFlowTheme.of(context).title1.override(
+                                                                                    fontFamily: 'Lexend Deca',
+                                                                                    fontSize: 32,
+                                                                                  ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            20,
+                                                                            12,
+                                                                            20,
+                                                                            16),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              UserCall.xrplwallet(
+                                                                                (walletsCardsUserResponse?.jsonBody ?? ''),
+                                                                              ).toString().maybeHandleOverflow(
+                                                                                    maxChars: 32,
+                                                                                    replacement: '…',
+                                                                                  ),
+                                                                              style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                    fontFamily: 'Roboto Mono',
+                                                                                    color: FlutterFlowTheme.of(context).textColor,
+                                                                                    fontSize: 10,
+                                                                                  ),
+                                                                            ),
+                                                                            Text(
+                                                                              'XRPL',
+                                                                              style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                    fontFamily: 'Roboto Mono',
+                                                                                    color: FlutterFlowTheme.of(context).textColor,
+                                                                                  ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ).animated([
+                                                          animationsMap[
+                                                              'rowOnPageLoadAnimation3']
+                                                        ]),
+                                                      ),
                                                     Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 45, 0, 25),
+                                                              .fromSTEB(20, 30,
+                                                                  20, 0),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/images/2MGMNAZL7FDERJ7OLMVBWXK55Q.png',
+                                                                width: 35,
+                                                                height: 35,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          20,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      formatNumber(
+                                                                        functions
+                                                                            .toInt(valueOrDefault<String>(
+                                                                          BalanceCall
+                                                                              .xrp(
+                                                                            (pageViewBalanceResponse?.jsonBody ??
+                                                                                ''),
+                                                                          ).toString(),
+                                                                          '0',
+                                                                        )),
+                                                                        formatType:
+                                                                            FormatType.decimal,
+                                                                        decimalType:
+                                                                            DecimalType.automatic,
+                                                                      ),
+                                                                      '0',
+                                                                    ).maybeHandleOverflow(
+                                                                      maxChars:
+                                                                          28,
+                                                                      replacement:
+                                                                          '…',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyText1,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0,
+                                                                            0,
+                                                                            10,
+                                                                            0),
+                                                                child: Text(
+                                                                  'XRP',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(15, 50,
+                                                                  15, 0),
                                                       child: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
+                                                                .spaceBetween,
                                                         children: [
                                                           FFButtonWidget(
                                                             onPressed:
                                                                 () async {
                                                               context.pushNamed(
-                                                                  'CreateXRPLWallet');
+                                                                  'transferFundsXRPL');
                                                             },
-                                                            text:
-                                                                'Create XRPL Wallet',
+                                                            text: 'Send',
                                                             options:
                                                                 FFButtonOptions(
-                                                              width: 300,
+                                                              width: 150,
                                                               height: 70,
                                                               color: FlutterFlowTheme
                                                                       .of(context)
@@ -1043,6 +1647,8 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                             'Lexend Deca',
                                                                         color: Colors
                                                                             .white,
+                                                                        fontSize:
+                                                                            16,
                                                                       ),
                                                               borderSide:
                                                                   BorderSide(
@@ -1050,20 +1656,57 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                     .transparent,
                                                                 width: 1,
                                                               ),
-                                                              borderRadius: 12,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                            ),
+                                                          ),
+                                                          FFButtonWidget(
+                                                            onPressed: () {
+                                                              print(
+                                                                  'Button pressed ...');
+                                                            },
+                                                            text: 'Request',
+                                                            options:
+                                                                FFButtonOptions(
+                                                              width: 150,
+                                                              height: 70,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryColor,
+                                                              textStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .subtitle2
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Lexend Deca',
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: Colors
+                                                                    .transparent,
+                                                                width: 1,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
                                                             ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                  if (!(FFAppState()
-                                                          .showxrplbutton) ??
-                                                      true)
                                                     Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
-                                                                  0, 4, 0, 0),
+                                                                  0, 50, 0, 0),
                                                       child: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.max,
@@ -1071,341 +1714,50 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                             MainAxisAlignment
                                                                 .center,
                                                         children: [
-                                                          Container(
-                                                            width: MediaQuery.of(
+                                                          FlutterFlowIconButton(
+                                                            borderColor: Colors
+                                                                .transparent,
+                                                            borderRadius: 30,
+                                                            borderWidth: 1,
+                                                            buttonSize: 60,
+                                                            fillColor:
+                                                                FlutterFlowTheme.of(
                                                                         context)
-                                                                    .size
-                                                                    .width *
-                                                                0.92,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  blurRadius: 6,
-                                                                  color: Color(
-                                                                      0x4B1A1F24),
-                                                                  offset:
-                                                                      Offset(
-                                                                          0, 2),
-                                                                )
-                                                              ],
-                                                              gradient:
-                                                                  LinearGradient(
-                                                                colors: [
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .background,
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .darkBackground
-                                                                ],
-                                                                stops: [0, 1],
-                                                                begin:
-                                                                    AlignmentDirectional(
-                                                                        0.94,
-                                                                        -1),
-                                                                end:
-                                                                    AlignmentDirectional(
-                                                                        -0.94,
-                                                                        1),
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
+                                                                    .primaryColor,
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .qr_code_rounded,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .textColor,
+                                                              size: 30,
                                                             ),
-                                                            child: InkWell(
-                                                              onTap: () async {
-                                                                await showModalBottomSheet(
-                                                                  isScrollControlled:
-                                                                      true,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return Padding(
-                                                                      padding: MediaQuery.of(
-                                                                              context)
-                                                                          .viewInsets,
-                                                                      child:
-                                                                          Container(
-                                                                        height:
-                                                                            300,
-                                                                        child:
-                                                                            XRPLDetailCardWidget(),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                );
-                                                              },
-                                                              child:
-                                                                  SingleChildScrollView(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              20,
-                                                                              20,
-                                                                              20,
-                                                                              0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Text(
-                                                                            'VGB',
-                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                  fontFamily: 'Lexend Deca',
-                                                                                  color: FlutterFlowTheme.of(context).textColor,
-                                                                                  fontSize: 18,
-                                                                                ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              20,
-                                                                              24,
-                                                                              20,
-                                                                              0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Text(
-                                                                            'Balance',
-                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                  fontFamily: 'Lexend Deca',
-                                                                                  color: FlutterFlowTheme.of(context).textColor,
-                                                                                ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              20,
-                                                                              8,
-                                                                              20,
-                                                                              0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Text(
-                                                                            valueOrDefault<String>(
-                                                                              BalanceCall.xrpl(
-                                                                                (pageViewBalanceResponse?.jsonBody ?? ''),
-                                                                              ).toString(),
-                                                                              '0',
-                                                                            ),
-                                                                            style: FlutterFlowTheme.of(context).title1.override(
-                                                                                  fontFamily: 'Lexend Deca',
-                                                                                  fontSize: 32,
-                                                                                ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              20,
-                                                                              12,
-                                                                              20,
-                                                                              16),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                            UserCall.xrplwallet(
-                                                                              (walletsCardsUserResponse?.jsonBody ?? ''),
-                                                                            ).toString().maybeHandleOverflow(
-                                                                                  maxChars: 32,
-                                                                                  replacement: '…',
-                                                                                ),
-                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                  fontFamily: 'Roboto Mono',
-                                                                                  color: FlutterFlowTheme.of(context).textColor,
-                                                                                  fontSize: 10,
-                                                                                ),
-                                                                          ),
-                                                                          Text(
-                                                                            'XRPL',
-                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                  fontFamily: 'Roboto Mono',
-                                                                                  color: FlutterFlowTheme.of(context).textColor,
-                                                                                ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              context.pushNamed(
+                                                                  'XRPLQRScan');
+                                                            },
                                                           ),
                                                         ],
-                                                      ).animated([
-                                                        animationsMap[
-                                                            'rowOnPageLoadAnimation3']
-                                                      ]),
-                                                    ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                15, 50, 15, 0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        FFButtonWidget(
-                                                          onPressed: () {
-                                                            print(
-                                                                'Button pressed ...');
-                                                          },
-                                                          text: 'Send',
-                                                          options:
-                                                              FFButtonOptions(
-                                                            width: 150,
-                                                            height: 70,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .subtitle2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Lexend Deca',
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              width: 1,
-                                                            ),
-                                                            borderRadius: 12,
-                                                          ),
-                                                        ),
-                                                        FFButtonWidget(
-                                                          onPressed: () {
-                                                            print(
-                                                                'Button pressed ...');
-                                                          },
-                                                          text: 'Request',
-                                                          options:
-                                                              FFButtonOptions(
-                                                            width: 150,
-                                                            height: 70,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .subtitle2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Lexend Deca',
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              width: 1,
-                                                            ),
-                                                            borderRadius: 12,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                0, 50, 0, 0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        FlutterFlowIconButton(
-                                                          borderColor: Colors
-                                                              .transparent,
-                                                          borderRadius: 30,
-                                                          borderWidth: 1,
-                                                          buttonSize: 60,
-                                                          fillColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                          icon: Icon(
-                                                            Icons
-                                                                .qr_code_rounded,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .textColor,
-                                                            size: 30,
-                                                          ),
-                                                          onPressed: () {
-                                                            print(
-                                                                'IconButton pressed ...');
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  if (!(FFAppState()
-                                                          .showxrplbutton) ??
-                                                      true)
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 50, 0, 0),
-                                                      child: Text(
-                                                        'How can I activate my account?',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1,
                                                       ),
                                                     ),
-                                                ],
+                                                    if (!(FFAppState()
+                                                            .showxrplbutton) ??
+                                                        true)
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(0, 50,
+                                                                    0, 0),
+                                                        child: Text(
+                                                          'How can I activate my account?',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyText1,
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           },
@@ -1425,7 +1777,7 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                     ))
                                       Expanded(
                                         child: FutureBuilder<ApiCallResponse>(
-                                          future: UnlockxrplCall.call(
+                                          future: StripeBalanceCall.call(
                                             uid: currentUserUid,
                                           ),
                                           builder: (context, snapshot) {
@@ -1442,7 +1794,7 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                 ),
                                               );
                                             }
-                                            final columnUnlockxrplResponse =
+                                            final columnStripeBalanceResponse =
                                                 snapshot.data;
                                             return SingleChildScrollView(
                                               child: Column(
@@ -1450,61 +1802,6 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  if (FFAppState()
-                                                          .showxrplbutton ??
-                                                      true)
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 45, 0, 25),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          FFButtonWidget(
-                                                            onPressed:
-                                                                () async {
-                                                              context.pushNamed(
-                                                                  'CreateXRPLWallet');
-                                                            },
-                                                            text:
-                                                                'Create XRPL Wallet',
-                                                            options:
-                                                                FFButtonOptions(
-                                                              width: 300,
-                                                              height: 70,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primaryColor,
-                                                              textStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle2
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Lexend Deca',
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: Colors
-                                                                    .transparent,
-                                                                width: 1,
-                                                              ),
-                                                              borderRadius: 12,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
                                                   if (!(FFAppState()
                                                           .showxrplbutton) ??
                                                       true)
@@ -1606,6 +1903,8 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                           Row(
                                                                         mainAxisSize:
                                                                             MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
                                                                         children: [
                                                                           Text(
                                                                             'FIAT',
@@ -1614,6 +1913,26 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                                   color: FlutterFlowTheme.of(context).textColor,
                                                                                   fontSize: 18,
                                                                                 ),
+                                                                          ),
+                                                                          FlutterFlowIconButton(
+                                                                            borderColor:
+                                                                                Colors.transparent,
+                                                                            borderRadius:
+                                                                                30,
+                                                                            borderWidth:
+                                                                                1,
+                                                                            buttonSize:
+                                                                                30,
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.info_outline_rounded,
+                                                                              color: FlutterFlowTheme.of(context).textColor,
+                                                                              size: 15,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              print('IconButton pressed ...');
+                                                                            },
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1654,9 +1973,16 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                         children: [
                                                                           Text(
                                                                             valueOrDefault<String>(
-                                                                              BalanceCall.xrpl(
-                                                                                (pageViewBalanceResponse?.jsonBody ?? ''),
-                                                                              ).toString(),
+                                                                              formatNumber(
+                                                                                functions.toInt(valueOrDefault<String>(
+                                                                                  StripeBalanceCall.available(
+                                                                                    (columnStripeBalanceResponse?.jsonBody ?? ''),
+                                                                                  ).toString(),
+                                                                                  '0',
+                                                                                )),
+                                                                                formatType: FormatType.decimal,
+                                                                                decimalType: DecimalType.automatic,
+                                                                              ),
                                                                               '0',
                                                                             ),
                                                                             style: FlutterFlowTheme.of(context).title1.override(
@@ -1681,18 +2007,48 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.spaceBetween,
                                                                         children: [
-                                                                          Text(
-                                                                            UserCall.xrplwallet(
-                                                                              (walletsCardsUserResponse?.jsonBody ?? ''),
-                                                                            ).toString().maybeHandleOverflow(
-                                                                                  maxChars: 32,
-                                                                                  replacement: '…',
+                                                                          Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Text(
+                                                                                'Pending:',
+                                                                                style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                      fontFamily: 'Lexend Deca',
+                                                                                      color: FlutterFlowTheme.of(context).textColor,
+                                                                                      fontSize: 10,
+                                                                                    ),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(3, 0, 0, 0),
+                                                                                child: Text(
+                                                                                  formatNumber(
+                                                                                    functions.stripeToBalance(StripeBalanceCall.pending(
+                                                                                      (columnStripeBalanceResponse?.jsonBody ?? ''),
+                                                                                    ).toString()),
+                                                                                    formatType: FormatType.decimal,
+                                                                                  ),
+                                                                                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                        fontFamily: 'Roboto Mono',
+                                                                                        color: FlutterFlowTheme.of(context).textColor,
+                                                                                        fontSize: 10,
+                                                                                      ),
                                                                                 ),
-                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                  fontFamily: 'Roboto Mono',
-                                                                                  color: FlutterFlowTheme.of(context).textColor,
-                                                                                  fontSize: 10,
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(3, 0, 0, 0),
+                                                                                child: Text(
+                                                                                  StripeBalanceCall.currency(
+                                                                                    (columnStripeBalanceResponse?.jsonBody ?? ''),
+                                                                                  ).toString(),
+                                                                                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                        fontFamily: 'Roboto Mono',
+                                                                                        color: FlutterFlowTheme.of(context).textColor,
+                                                                                        fontSize: 10,
+                                                                                      ),
                                                                                 ),
+                                                                              ),
+                                                                            ],
                                                                           ),
                                                                           Text(
                                                                             'Bank',
@@ -1727,111 +2083,51 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        FFButtonWidget(
-                                                          onPressed: () {
-                                                            print(
-                                                                'Button pressed ...');
-                                                          },
-                                                          text: 'Send',
-                                                          options:
-                                                              FFButtonOptions(
-                                                            width: 150,
-                                                            height: 70,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .subtitle2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Lexend Deca',
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              width: 1,
-                                                            ),
-                                                            borderRadius: 12,
-                                                          ),
-                                                        ),
-                                                        FFButtonWidget(
-                                                          onPressed: () {
-                                                            print(
-                                                                'Button pressed ...');
-                                                          },
-                                                          text: 'Request',
-                                                          options:
-                                                              FFButtonOptions(
-                                                            width: 150,
-                                                            height: 70,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .subtitle2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Lexend Deca',
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              width: 1,
-                                                            ),
-                                                            borderRadius: 12,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                0, 50, 0, 0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        FlutterFlowIconButton(
-                                                          borderColor: Colors
-                                                              .transparent,
-                                                          borderRadius: 30,
-                                                          borderWidth: 1,
-                                                          buttonSize: 60,
-                                                          fillColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
+                                                        Expanded(
+                                                          child: FFButtonWidget(
+                                                            onPressed:
+                                                                () async {
+                                                              await launchURL(functions
+                                                                  .stripeDashboard(
+                                                                      StripeBalanceCall
+                                                                          .stripeId(
+                                                                (columnStripeBalanceResponse
+                                                                        ?.jsonBody ??
+                                                                    ''),
+                                                              ).toString()));
+                                                            },
+                                                            text: 'Dashboard',
+                                                            options:
+                                                                FFButtonOptions(
+                                                              width: 150,
+                                                              height: 70,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
                                                                   .primaryColor,
-                                                          icon: Icon(
-                                                            Icons
-                                                                .qr_code_rounded,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .textColor,
-                                                            size: 30,
+                                                              textStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .subtitle2
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Lexend Deca',
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: Colors
+                                                                    .transparent,
+                                                                width: 1,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                            ),
                                                           ),
-                                                          onPressed: () {
-                                                            print(
-                                                                'IconButton pressed ...');
-                                                          },
                                                         ),
                                                       ],
                                                     ),

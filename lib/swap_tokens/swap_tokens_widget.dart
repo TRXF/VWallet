@@ -1,14 +1,14 @@
 import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
-import '../flutter_flow/flutter_flow_count_controller.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SwapTokensWidget extends StatefulWidget {
@@ -18,11 +18,41 @@ class SwapTokensWidget extends StatefulWidget {
   _SwapTokensWidgetState createState() => _SwapTokensWidgetState();
 }
 
-class _SwapTokensWidgetState extends State<SwapTokensWidget> {
+class _SwapTokensWidgetState extends State<SwapTokensWidget>
+    with TickerProviderStateMixin {
   ApiCallResponse swapAmount;
   String dropDownValue;
-  int countControllerValue;
+  TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final animationsMap = {
+    'textFieldOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      delay: 170,
+      hideBeforeAnimating: false,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 80),
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        opacity: 1,
+      ),
+    ),
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    startPageLoadAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+
+    textController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,68 +244,69 @@ class _SwapTokensWidgetState extends State<SwapTokensWidget> {
                                 ],
                               ),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 50, 0, 0),
-                                    child: Container(
-                                      width: 160,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .darkBackground,
-                                        borderRadius: BorderRadius.circular(8),
-                                        shape: BoxShape.rectangle,
-                                        border: Border.all(
-                                          color: FlutterFlowTheme.of(context)
-                                              .background,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: FlutterFlowCountController(
-                                        decrementIconBuilder: (enabled) =>
-                                            FaIcon(
-                                          FontAwesomeIcons.minus,
-                                          color: enabled
-                                              ? FlutterFlowTheme.of(context)
-                                                  .textColor
-                                              : FlutterFlowTheme.of(context)
-                                                  .grayLight,
-                                          size: 20,
-                                        ),
-                                        incrementIconBuilder: (enabled) =>
-                                            FaIcon(
-                                          FontAwesomeIcons.plus,
-                                          color: enabled
-                                              ? FlutterFlowTheme.of(context)
-                                                  .primaryColor
-                                              : FlutterFlowTheme.of(context)
-                                                  .grayLight,
-                                          size: 20,
-                                        ),
-                                        countBuilder: (count) => Text(
-                                          count.toString(),
-                                          style: GoogleFonts.getFont(
-                                            'Roboto',
-                                            color: FlutterFlowTheme.of(context)
-                                                .grayLight,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        count: countControllerValue ??= 0,
-                                        updateCount: (count) => setState(
-                                            () => countControllerValue = count),
-                                        stepSize: 1,
-                                        minimum: 0,
-                                      ),
-                                    ),
-                                  ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                              child: TextFormField(
+                                controller: textController,
+                                onChanged: (_) => EasyDebounce.debounce(
+                                  'textController',
+                                  Duration(milliseconds: 2000),
+                                  () => setState(() {}),
                                 ),
-                              ],
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  labelText: 'Amount',
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: FlutterFlowTheme.of(context)
+                                            .grayLight,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .background,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .background,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  contentPadding:
+                                      EdgeInsetsDirectional.fromSTEB(
+                                          20, 24, 24, 24),
+                                  suffixIcon: textController.text.isNotEmpty
+                                      ? InkWell(
+                                          onTap: () => setState(
+                                            () => textController?.clear(),
+                                          ),
+                                          child: Icon(
+                                            Icons.clear,
+                                            color: Color(0xFF757575),
+                                            size: 22,
+                                          ),
+                                        )
+                                      : null,
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      fontSize: 24,
+                                    ),
+                                keyboardType: TextInputType.number,
+                              ).animated([
+                                animationsMap['textFieldOnPageLoadAnimation']
+                              ]),
                             ),
                             Padding(
                               padding:
@@ -328,11 +359,9 @@ class _SwapTokensWidgetState extends State<SwapTokensWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
+                                var _shouldSetState = false;
                                 swapAmount = await SwapToeknCall.call(
-                                  amount: valueOrDefault<String>(
-                                    countControllerValue.toString(),
-                                    '0',
-                                  ),
+                                  amount: textController.text,
                                   balance: RewardsBalanceCall.data(
                                     (columnRewardsBalanceResponse?.jsonBody ??
                                         ''),
@@ -346,15 +375,13 @@ class _SwapTokensWidgetState extends State<SwapTokensWidget> {
                                     'VAGA',
                                   ),
                                 );
-                                if ((countControllerValue) >
-                                    (RewardsBalanceCall.data(
-                                      (columnRewardsBalanceResponse?.jsonBody ??
-                                          ''),
-                                    ))) {
+                                _shouldSetState = true;
+                                if ((textController.text != null &&
+                                    textController.text != '')) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'You can´t swap more than you have',
+                                        'Swapping Tokens...',
                                         style: TextStyle(),
                                       ),
                                       duration: Duration(milliseconds: 4000),
@@ -362,8 +389,21 @@ class _SwapTokensWidgetState extends State<SwapTokensWidget> {
                                     ),
                                   );
                                 } else {
-                                  await Future.delayed(
-                                      const Duration(milliseconds: 1000));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Amount needs to be filled',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: Duration(milliseconds: 4000),
+                                      backgroundColor: Color(0x00000000),
+                                    ),
+                                  );
+                                  if (_shouldSetState) setState(() {});
+                                  return;
                                 }
 
                                 if ((getJsonField(
@@ -385,7 +425,7 @@ class _SwapTokensWidgetState extends State<SwapTokensWidget> {
                                   );
                                 }
 
-                                setState(() {});
+                                if (_shouldSetState) setState(() {});
                               },
                               text: 'Swap',
                               options: FFButtonOptions(
@@ -399,7 +439,7 @@ class _SwapTokensWidgetState extends State<SwapTokensWidget> {
                                   color: Colors.transparent,
                                   width: 1,
                                 ),
-                                borderRadius: 12,
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                           ],

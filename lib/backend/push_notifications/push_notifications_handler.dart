@@ -124,6 +124,10 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
   'WalletDetails': (data) async => WalletDetailsWidget(
         address: getParameter(data, 'address'),
       ),
+  'transferFundsBSC': (data) async => TransferFundsBSCWidget(),
+  'transferFundsVerifyBSC': (data) async => TransferFundsVerifyBSCWidget(),
+  'transferFundsXRPL': (data) async => TransferFundsXRPLWidget(),
+  'transferFundsVerifyXRPL': (data) async => TransferFundsVerifyXRPLWidget(),
   'TransactionApproval': (data) async => TransactionApprovalWidget(
         type: getParameter(data, 'type'),
         uuid: getParameter(data, 'uuid'),
@@ -134,6 +138,7 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
   'Cooldown': (data) async => CooldownWidget(),
   'Cheater': (data) async => CheaterWidget(),
   'WalletsCards': (data) async => WalletsCardsWidget(),
+  'WalletInformation': (data) async => WalletInformationWidget(),
   'SwapTokens': (data) async => SwapTokensWidget(),
   'RewardsList': (data) async => RewardsListWidget(),
   'ActivateAccount': (data) async => ActivateAccountWidget(),
@@ -146,6 +151,19 @@ final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
         gas: getParameter(data, 'gas'),
         hash: getParameter(data, 'hash'),
         owner: getParameter(data, 'owner'),
+        address: getParameter(data, 'address'),
+      ),
+  'XRPLQRScan': (data) async => XRPLQRScanWidget(),
+  'XRPLTransactionApproval': (data) async => XRPLTransactionApprovalWidget(
+        type: getParameter(data, 'type'),
+        uuid: getParameter(data, 'uuid'),
+      ),
+  'XRPLProcessQR': (data) async => XRPLProcessQRWidget(
+        type: getParameter(data, 'type'),
+        gas: getParameter(data, 'gas'),
+        hash: getParameter(data, 'hash'),
+        owner: getParameter(data, 'owner'),
+        address: getParameter(data, 'address'),
       ),
 };
 

@@ -14,12 +14,14 @@ class BSCProcessQRWidget extends StatefulWidget {
     this.gas,
     this.hash,
     this.owner,
+    this.address,
   }) : super(key: key);
 
   final String type;
   final String gas;
   final String hash;
   final String owner;
+  final String address;
 
   @override
   _BSCProcessQRWidgetState createState() => _BSCProcessQRWidgetState();

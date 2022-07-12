@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RequestFundsWidget extends StatefulWidget {
-  const RequestFundsWidget({Key key}) : super(key: key);
+class RequestFundingWidget extends StatefulWidget {
+  const RequestFundingWidget({Key key}) : super(key: key);
 
   @override
-  _RequestFundsWidgetState createState() => _RequestFundsWidgetState();
+  _RequestFundingWidgetState createState() => _RequestFundingWidgetState();
 }
 
-class _RequestFundsWidgetState extends State<RequestFundsWidget> {
+class _RequestFundingWidgetState extends State<RequestFundingWidget> {
   String uploadedFileUrl = '';
 
   @override
@@ -168,7 +168,7 @@ class _RequestFundsWidgetState extends State<RequestFundsWidget> {
                                   color: Colors.transparent,
                                   width: 1,
                                 ),
-                                borderRadius: 8,
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                             FFButtonWidget(
@@ -194,7 +194,7 @@ class _RequestFundsWidgetState extends State<RequestFundsWidget> {
                                   color: Colors.transparent,
                                   width: 1,
                                 ),
-                                borderRadius: 8,
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                           ],
@@ -229,7 +229,7 @@ class _RequestFundsWidgetState extends State<RequestFundsWidget> {
                                   color: Colors.transparent,
                                   width: 1,
                                 ),
-                                borderRadius: 8,
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                           ],

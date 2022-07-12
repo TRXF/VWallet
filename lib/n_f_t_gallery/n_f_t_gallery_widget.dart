@@ -207,164 +207,154 @@ class _NFTGalleryWidgetState extends State<NFTGalleryWidget> {
                                                                     ''),
                                                               )?.toList() ??
                                                               [];
-                                                      return Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: List.generate(
-                                                            nfts.length,
-                                                            (nftsIndex) {
-                                                          final nftsItem =
-                                                              nfts[nftsIndex];
-                                                          return Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        16,
-                                                                        8,
-                                                                        16,
-                                                                        8),
-                                                            child: Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .background,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    blurRadius:
-                                                                        8,
-                                                                    color: Color(
-                                                                        0x230F1113),
-                                                                    offset:
-                                                                        Offset(
-                                                                            0,
-                                                                            4),
-                                                                  )
-                                                                ],
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                              ),
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .only(
-                                                                      bottomLeft:
-                                                                          Radius.circular(
-                                                                              0),
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                              0),
-                                                                      topLeft: Radius
+                                                      return SingleChildScrollView(
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children:
+                                                              List.generate(
+                                                                  nfts.length,
+                                                                  (nftsIndex) {
+                                                            final nftsItem =
+                                                                nfts[nftsIndex];
+                                                            return Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          16,
+                                                                          8,
+                                                                          16,
+                                                                          8),
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .background,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      blurRadius:
+                                                                          8,
+                                                                      color: Color(
+                                                                          0x230F1113),
+                                                                      offset:
+                                                                          Offset(
+                                                                              0,
+                                                                              4),
+                                                                    )
+                                                                  ],
+                                                                  borderRadius:
+                                                                      BorderRadius
                                                                           .circular(
                                                                               12),
-                                                                      topRight:
-                                                                          Radius.circular(
-                                                                              12),
-                                                                    ),
-                                                                    child: Image
-                                                                        .network(
-                                                                      getJsonField(
-                                                                        nftsItem,
-                                                                        r'''$.NftItem.tokenURI''',
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .only(
+                                                                        bottomLeft:
+                                                                            Radius.circular(0),
+                                                                        bottomRight:
+                                                                            Radius.circular(0),
+                                                                        topLeft:
+                                                                            Radius.circular(12),
+                                                                        topRight:
+                                                                            Radius.circular(12),
                                                                       ),
-                                                                      width: double
-                                                                          .infinity,
-                                                                      height:
-                                                                          200,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            16,
-                                                                            12,
-                                                                            16,
-                                                                            12),
-                                                                    child: Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Text(
-                                                                              getJsonField(
-                                                                                nftsItem,
-                                                                                r'''$.NftItem.owner''',
-                                                                              ).toString().maybeHandleOverflow(
-                                                                                    maxChars: 18,
-                                                                                    replacement: '…',
-                                                                                  ),
-                                                                              style: FlutterFlowTheme.of(context).subtitle1.override(
-                                                                                    fontFamily: 'Lexend Deca',
-                                                                                    color: FlutterFlowTheme.of(context).textColor,
-                                                                                    fontSize: 18,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                            ),
-                                                                          ],
+                                                                      child: Image
+                                                                          .network(
+                                                                        getJsonField(
+                                                                          nftsItem,
+                                                                          r'''$.NftItem.tokenURI''',
                                                                         ),
-                                                                        Container(
-                                                                          height:
-                                                                              32,
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                Color(0xFF1D2429),
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(12),
+                                                                        width: double
+                                                                            .infinity,
+                                                                        height:
+                                                                            200,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              16,
+                                                                              12,
+                                                                              16,
+                                                                              12),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(
+                                                                                getJsonField(
+                                                                                  nftsItem,
+                                                                                  r'''$.NftItem.owner''',
+                                                                                ).toString().maybeHandleOverflow(
+                                                                                      maxChars: 18,
+                                                                                      replacement: '…',
+                                                                                    ),
+                                                                                style: FlutterFlowTheme.of(context).subtitle1.override(
+                                                                                      fontFamily: 'Lexend Deca',
+                                                                                      color: FlutterFlowTheme.of(context).textColor,
+                                                                                      fontSize: 18,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                          alignment: AlignmentDirectional(
-                                                                              0,
-                                                                              0),
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                10,
-                                                                                0,
-                                                                                10,
-                                                                                0),
+                                                                          Container(
+                                                                            height:
+                                                                                32,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: Color(0xFF1D2429),
+                                                                              borderRadius: BorderRadius.circular(12),
+                                                                            ),
+                                                                            alignment:
+                                                                                AlignmentDirectional(0, 0),
                                                                             child:
-                                                                                Text(
-                                                                              getJsonField(
-                                                                                nftsItem,
-                                                                                r'''$.NftItem.id''',
-                                                                              ).toString(),
-                                                                              style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                    fontFamily: 'Lexend Deca',
-                                                                                    color: Colors.white,
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: FontWeight.normal,
-                                                                                  ),
+                                                                                Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                                                                              child: Text(
+                                                                                getJsonField(
+                                                                                  nftsItem,
+                                                                                  r'''$.NftItem.id''',
+                                                                                ).toString(),
+                                                                                style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                      fontFamily: 'Lexend Deca',
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.normal,
+                                                                                    ),
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                        ),
-                                                                      ],
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ],
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        }),
+                                                            );
+                                                          }),
+                                                        ),
                                                       );
                                                     },
                                                   );
@@ -867,7 +857,7 @@ class _NFTGalleryWidgetState extends State<NFTGalleryWidget> {
                                                                                 color: Colors.transparent,
                                                                                 width: 1,
                                                                               ),
-                                                                              borderRadius: 12,
+                                                                              borderRadius: BorderRadius.circular(12),
                                                                             ),
                                                                           ),
                                                                         ),
