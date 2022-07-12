@@ -16,6 +16,8 @@
 	<string>VWallet</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Why is my app authenticating using face id?</string>
 
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
