@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -290,7 +291,25 @@ class _TransferFundsXRPLWidgetState extends State<TransferFundsXRPLWidget>
                                                 final textBalanceResponse =
                                                     snapshot.data;
                                                 return Text(
-                                                  FFAppState().balancevgb,
+                                                  valueOrDefault<String>(
+                                                    formatNumber(
+                                                      functions.toInt(
+                                                          valueOrDefault<
+                                                              String>(
+                                                        BalanceCall.xrpl(
+                                                          (textBalanceResponse
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        ).toString(),
+                                                        '0',
+                                                      )),
+                                                      formatType:
+                                                          FormatType.decimal,
+                                                      decimalType:
+                                                          DecimalType.automatic,
+                                                    ),
+                                                    '0',
+                                                  ),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .title1

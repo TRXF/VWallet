@@ -7,7 +7,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'dart:ui';
-import '../custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -29,7 +28,6 @@ class _MYCardWidgetState extends State<MYCardWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var qrhex = '';
   ApiCallResponse reloadBalance;
-  String isAuth;
   ApiCallResponse vagaBalance;
   final animationsMap = {
     'rowOnPageLoadAnimation': AnimationInfo(
@@ -859,27 +857,6 @@ class _MYCardWidgetState extends State<MYCardWidget>
                                                   );
                                                 },
                                               );
-                                              isAuth = await actions.faceId();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    isAuth,
-                                                    style: TextStyle(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                    ),
-                                                  ),
-                                                  duration: Duration(
-                                                      milliseconds: 8250),
-                                                  backgroundColor:
-                                                      Color(0x00000000),
-                                                ),
-                                              );
-
-                                              setState(() {});
                                             },
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,

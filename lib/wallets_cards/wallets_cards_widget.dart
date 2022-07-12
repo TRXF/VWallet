@@ -1,6 +1,7 @@
 import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
 import '../components/b_s_c_detail_card_widget.dart';
+import '../components/request_q_r_widget.dart';
 import '../components/v_a_g_a_detail_card_widget.dart';
 import '../components/x_r_p_l_detail_card_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
@@ -532,6 +533,82 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                     'containerOnPageLoadAnimation1']
                                               ]),
                                             ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(15, 50, 15, 0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  FFButtonWidget(
+                                                    onPressed: () async {
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return Padding(
+                                                            padding:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .viewInsets,
+                                                            child: Container(
+                                                              height: 600,
+                                                              child:
+                                                                  RequestQRWidget(
+                                                                address:
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                  UserCall
+                                                                      .vagawallet(
+                                                                    (walletsCardsUserResponse
+                                                                            ?.jsonBody ??
+                                                                        ''),
+                                                                  ).toString(),
+                                                                  'vaga1234567890',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    text: 'Request',
+                                                    options: FFButtonOptions(
+                                                      width: 150,
+                                                      height: 70,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryColor,
+                                                      textStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .subtitle2
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Lexend Deca',
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 16,
+                                                              ),
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -1034,9 +1111,39 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                         ),
                                                       ),
                                                       FFButtonWidget(
-                                                        onPressed: () {
-                                                          print(
-                                                              'Button pressed ...');
+                                                        onPressed: () async {
+                                                          await showModalBottomSheet(
+                                                            isScrollControlled:
+                                                                true,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Padding(
+                                                                padding: MediaQuery.of(
+                                                                        context)
+                                                                    .viewInsets,
+                                                                child:
+                                                                    Container(
+                                                                  height: 600,
+                                                                  child:
+                                                                      RequestQRWidget(
+                                                                    address:
+                                                                        valueOrDefault<
+                                                                            String>(
+                                                                      UserCall
+                                                                          .bscwallet(
+                                                                        (walletsCardsUserResponse?.jsonBody ??
+                                                                            ''),
+                                                                      ).toString(),
+                                                                      '0x00000000000000',
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
                                                         },
                                                         text: 'Request',
                                                         options:
@@ -1663,9 +1770,42 @@ class _WalletsCardsWidgetState extends State<WalletsCardsWidget>
                                                             ),
                                                           ),
                                                           FFButtonWidget(
-                                                            onPressed: () {
-                                                              print(
-                                                                  'Button pressed ...');
+                                                            onPressed:
+                                                                () async {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: MediaQuery.of(
+                                                                            context)
+                                                                        .viewInsets,
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          600,
+                                                                      child:
+                                                                          RequestQRWidget(
+                                                                        address:
+                                                                            valueOrDefault<String>(
+                                                                          UserCall
+                                                                              .xrplwallet(
+                                                                            (walletsCardsUserResponse?.jsonBody ??
+                                                                                ''),
+                                                                          ).toString(),
+                                                                          'r1234567890',
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
                                                             },
                                                             text: 'Request',
                                                             options:
